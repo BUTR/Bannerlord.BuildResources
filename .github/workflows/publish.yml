@@ -1,0 +1,35 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-on-nuget:
+    name: Publish on NuGet
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.1.300
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+    - name: Pack Bannerlord.BuildResources (Release)
+      run: >-
+        dotnet pack src/Bannerlord.BuildResources/Bannerlord.BuildResources.csproj --configuration Release -o "./packages";
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+    - name: Push to NuGet
+      run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1

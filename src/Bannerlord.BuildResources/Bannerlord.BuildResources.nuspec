@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Bannerlord.BuildResources</id>
+    <version>$version$</version>
+    <title>Bannerlord Build Resources</title>
+    <owners>Aragas</owners>
+    <authors>BUTR</authors>
+    <description>Resources for building Bannerlord modules and tools.</description>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <repository type="git" url="https://github.com/BUTR/Bannerlord.BuildResources.git" />
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="build\*" target="build" />
+  </files>
+</package>
