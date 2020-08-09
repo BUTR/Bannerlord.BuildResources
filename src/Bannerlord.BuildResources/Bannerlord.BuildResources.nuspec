@@ -17,6 +17,5 @@
     <file src="_._" target="lib/netstandard1.0/" />
     <file src="_._" target="lib/net45/" />
     <file src="build\*" target="build" />
-    <file src="build\*" target="buildtransitive" />
   </files>
 </package>
