@@ -15,5 +15,6 @@
   </metadata>
   <files>
     <file src="build\*" target="build" />
+    <file src="build\*" target="buildtransitive" />
   </files>
 </package>
