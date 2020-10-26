@@ -1,6 +1,6 @@
 <Project>
 
-  <PropertyGroup" >
+  <PropertyGroup>
     <PostBuildCopyToModulesRegex>.*\.dll|.*\.config$</PostBuildCopyToModulesRegex>
   </PropertyGroup>
 
