@@ -42,9 +42,9 @@
 
     <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$version\$" ReplacementText="$(Version)" />
     <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$gameversion\$" ReplacementText="$(GameVersion)" />
-    <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$harmonyversion\$" ReplacementText="$(HarmonyVersion)" />
-    <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$butterlibversion\$" ReplacementText="$(ButterLibVersion)" />
-    <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$uiextenderversion\$" ReplacementText="$(UIExtenderExVersion)" />
+    <ReplaceFileText Condition="$(HarmonyVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$harmonyversion\$" ReplacementText="$(HarmonyVersion)" />
+    <ReplaceFileText Condition="$(ButterLibVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$butterlibversion\$" ReplacementText="$(ButterLibVersion)" />
+    <ReplaceFileText Condition="$(UIExtenderExVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$uiextenderversion\$" ReplacementText="$(UIExtenderExVersion)" />
   </Target>
 
   <UsingTask
