@@ -14,9 +14,9 @@
     <tags></tags>
   </metadata>
   <files>
-    <file src="_._" target="lib/netstandard2.0/" />
-    <file src="_._" target="lib/net472/" />
-    <file src="build/*" target="build/netstandard2.0/" />
-    <file src="build/*" target="build/net472/" />
+    <file src="_._" target="tools" />
+	
+    <file src="$ProjectDirectory$\build\*.*" target="build" />
+    <file src="$ProjectDirectory$\buildMultiTargeting\*.*" target="buildMultiTargeting" />
   </files>
 </package>
