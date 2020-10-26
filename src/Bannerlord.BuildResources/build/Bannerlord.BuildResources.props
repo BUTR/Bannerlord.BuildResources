@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup" >
-    <PostBuildCopyToModulesRegex>.*\.dll|.*\.config$</DefineConstants>
+    <PostBuildCopyToModulesRegex>.*\.dll|.*\.config$</PostBuildCopyToModulesRegex>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Beta_Debug'" >
