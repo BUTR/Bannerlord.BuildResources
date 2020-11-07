@@ -42,7 +42,7 @@
 
     <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$modulename\$" ReplacementText="$(ModuleName)" />
     <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$version\$" ReplacementText="$(Version)" />
-    <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$gameversion\$" ReplacementText="$(GameVersion)" />
+    <ReplaceFileText Condition="$(GameVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$gameversion\$" ReplacementText="$(GameVersion)" />
     <ReplaceFileText Condition="$(HarmonyVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$harmonyversion\$" ReplacementText="$(HarmonyVersion)" />
     <ReplaceFileText Condition="$(ButterLibVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$butterlibversion\$" ReplacementText="$(ButterLibVersion)" />
     <ReplaceFileText Condition="$(UIExtenderExVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$uiextenderversion\$" ReplacementText="$(UIExtenderExVersion)" />
