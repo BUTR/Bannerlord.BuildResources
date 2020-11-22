@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <PostBuildCopyToModulesRegex>.*\.dll|.*\.config$</PostBuildCopyToModulesRegex>
+    <PostBuildCopyToModulesRegex>.*\.dll|.*\.pdb|.*\.config$</PostBuildCopyToModulesRegex>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Release'" >
