@@ -1,9 +1,14 @@
 <Project>
 
   <PropertyGroup>
-    <PostBuildCopyToModulesRegex>.*\.dll|.*\.config$</PostBuildCopyToModulesRegex>
+    <PostBuildCopyToModulesRegex>.*\.dll|.*\.pdb|.*\.config$</PostBuildCopyToModulesRegex>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$(Configuration) == 'Release'" >
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Beta_Debug'" >
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
@@ -13,8 +18,8 @@
 
   <PropertyGroup Condition="$(Configuration) == 'Stable_Release' OR $(Configuration) == 'Beta_Release'" >
     <DefineConstants>$(DefineConstants);RELEASE;TRACE</DefineConstants>
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
 

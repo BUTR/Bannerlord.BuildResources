@@ -45,7 +45,8 @@
     <ReplaceFileText Condition="$(GameVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$gameversion\$" ReplacementText="$(GameVersion)" />
     <ReplaceFileText Condition="$(HarmonyVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$harmonyversion\$" ReplacementText="$(HarmonyVersion)" />
     <ReplaceFileText Condition="$(ButterLibVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$butterlibversion\$" ReplacementText="$(ButterLibVersion)" />
-    <ReplaceFileText Condition="$(UIExtenderExVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$uiextenderversion\$" ReplacementText="$(UIExtenderExVersion)" />
+    <ReplaceFileText Condition="$(UIExtenderExVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$uiextenderexversion\$" ReplacementText="$(UIExtenderExVersion)" />
+    <ReplaceFileText Condition="$(ModuleLoaderVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$moduleloaderversion\$" ReplacementText="$(ModuleLoaderVersion)" />
   </Target>
 
   <UsingTask
