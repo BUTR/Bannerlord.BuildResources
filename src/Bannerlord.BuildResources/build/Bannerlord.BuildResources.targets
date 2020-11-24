@@ -2,6 +2,11 @@
 
   <Target Name="AddGameVersionMetadaAssemblyAttributes" BeforeTargets="CoreGenerateAssemblyInfo">
     <ItemGroup>
+      <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition="$(GameVersion) != ''" >
+        <_Parameter1>GameVersion</_Parameter1>
+        <_Parameter2>e$(GameVersion)</_Parameter2>
+      </AssemblyAttribute>
+      <!--
       <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition="$(Configuration) == 'Debug' OR $(Configuration) == 'Release'" >
         <_Parameter1>GameVersion</_Parameter1>
         <_Parameter2>e$(GameVersion)</_Parameter2>
@@ -14,6 +19,7 @@
         <_Parameter1>GameVersion</_Parameter1>
         <_Parameter2>e$(BetaVersion)</_Parameter2>
       </AssemblyAttribute>
+      -->
     </ItemGroup>
   </Target>
 
