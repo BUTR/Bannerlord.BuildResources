@@ -1,6 +1,6 @@
 <Project>
 
-  <Target Name="AddGameVersionMetadaAssemblyAttributes" BeforeTargets="CoreGenerateAssemblyInfo" Condition="$(DisableAddMetadata) != 'true'">
+  <Target Name="AddGameVersionMetadaAssemblyAttributes" BeforeTargets="CoreGenerateAssemblyInfo">
     <ItemGroup>
       <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition="$(GameVersion) != ''" >
         <_Parameter1>GameVersion</_Parameter1>
