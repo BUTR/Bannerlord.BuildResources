@@ -6,20 +6,6 @@
         <_Parameter1>GameVersion</_Parameter1>
         <_Parameter2>e$(GameVersion)</_Parameter2>
       </AssemblyAttribute>
-      <!--
-      <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition="$(Configuration) == 'Debug' OR $(Configuration) == 'Release'" >
-        <_Parameter1>GameVersion</_Parameter1>
-        <_Parameter2>e$(GameVersion)</_Parameter2>
-      </AssemblyAttribute>
-      <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'" >
-        <_Parameter1>GameVersion</_Parameter1>
-        <_Parameter2>e$(StableVersion)</_Parameter2>
-      </AssemblyAttribute>
-      <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'" >
-        <_Parameter1>GameVersion</_Parameter1>
-        <_Parameter2>e$(BetaVersion)</_Parameter2>
-      </AssemblyAttribute>
-      -->
     </ItemGroup>
   </Target>
 
