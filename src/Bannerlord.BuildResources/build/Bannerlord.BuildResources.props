@@ -4,37 +4,39 @@
     <PostBuildCopyToModulesRegex>.*\.dll|.*\.pdb|.*\.config$</PostBuildCopyToModulesRegex>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'Release'" >
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>true</Optimize>
+  <PropertyGroup>
+    <IsStable>false</IsStable>
+    <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
+    <IsBeta>false</IsBeta>
+    <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
   </PropertyGroup>
   
-    <PropertyGroup Condition="$(Configuration) == 'Debug'" >
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>false</Optimize>
+  <PropertyGroup>
+    <IsDebug>false</IsDebug>
+    <IsDebug Condition="$(Configuration.Contains('Debug'))">true</IsDebug>
+    <IsRelease>false</IsRelease>
+    <IsRelease Condition="$(Configuration.Contains('Release'))">true</IsRelease>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Beta_Debug'" >
+
+  <PropertyGroup Condition="$(IsDebug)" >
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
   </PropertyGroup>
-
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Release' OR $(Configuration) == 'Beta_Release'" >
-    <DefineConstants>$(DefineConstants);RELEASE;TRACE</DefineConstants>
+  
+  <PropertyGroup Condition="$(IsRelease)" >
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'" >
+  <PropertyGroup Condition="$(IsStable)" >
     <DefineConstants>$(DefineConstants);STABLE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'" >
+  <PropertyGroup Condition="$(IsBeta)" >
     <DefineConstants>$(DefineConstants);BETA</DefineConstants>
   </PropertyGroup>
 
