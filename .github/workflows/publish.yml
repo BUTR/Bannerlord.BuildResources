@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '.github/workflows/publish.yml'
+      - 'src/**'
+      - 'resources/**'
 
 env:
   # Disable the .NET logo in the console output.
