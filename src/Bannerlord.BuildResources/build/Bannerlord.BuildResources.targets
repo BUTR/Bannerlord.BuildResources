@@ -32,13 +32,42 @@
 
     <CopyFolder FromDirectory="$(ProjectDir)/_Module" ToDirectory="$(GameFolder)/Modules/$(ModuleName)" Regex="^.*$" Clean="false" />
 
-    <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$modulename\$" ReplacementText="$(ModuleName)" />
-    <ReplaceFileText File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$version\$" ReplacementText="$(Version)" />
-    <ReplaceFileText Condition="$(GameVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$gameversion\$" ReplacementText="$(GameVersion)" />
-    <ReplaceFileText Condition="$(HarmonyVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$harmonyversion\$" ReplacementText="$(HarmonyVersion)" />
-    <ReplaceFileText Condition="$(ButterLibVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$butterlibversion\$" ReplacementText="$(ButterLibVersion)" />
-    <ReplaceFileText Condition="$(UIExtenderExVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$uiextenderexversion\$" ReplacementText="$(UIExtenderExVersion)" />
-    <ReplaceFileText Condition="$(ModuleLoaderVersion) != ''" File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml" Regex="\$moduleloaderversion\$" ReplacementText="$(ModuleLoaderVersion)" />
+    <ItemGroup>
+      <SubModuleOverrides Include="ModuleName">
+        <Regex>\$modulename\$</Regex>
+        <Replacement>$(ModuleName)</Replacement>
+      </SubModuleOverrides>
+      <SubModuleOverrides Include="Version">
+        <Regex>\$version\$</Regex>
+        <Replacement>$(Version)</Replacement>
+      </SubModuleOverrides>
+      <SubModuleOverrides Include="GameVersion" Condition="$(GameVersion) != ''">
+        <Regex>\$gameversion\$</Regex>
+        <Replacement>$(GameVersion)</Replacement>
+      </SubModuleOverrides>
+      <SubModuleOverrides Include="HarmonyVersion" Condition="$(HarmonyVersion) != ''">
+        <Regex>\$harmonyversion\$</Regex>
+        <Replacement>$(HarmonyVersion)</Replacement>
+      </SubModuleOverrides>
+      <SubModuleOverrides Include="ButterLibVersion" Condition="$(ButterLibVersion) != ''">
+        <Regex>\$butterlibversion\$</Regex>
+        <Replacement>$(ButterLibVersion)</Replacement>
+      </SubModuleOverrides>
+      <SubModuleOverrides Include="UIExtenderExVersion" Condition="$(UIExtenderExVersion) != ''">
+        <Regex>\$uiextenderexversion\$</Regex>
+        <Replacement>$(UIExtenderExVersion)</Replacement>
+      </SubModuleOverrides>
+      <SubModuleOverrides Include="ModuleLoaderVersion" Condition="$(ModuleLoaderVersion) != ''">
+        <Regex>\$moduleloaderversion\$</Regex>
+        <Replacement>$(ModuleLoaderVersion)</Replacement>
+      </SubModuleOverrides>
+    </ItemGroup>
+
+    <ReplaceFileText
+      Condition="'@(SubModuleOverrides->Count())' &gt; 0"
+      File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml"
+      Regex="%(SubModuleOverrides.Regex)"
+      ReplacementText="%(SubModuleOverrides.Replacement)" />
   </Target>
 
   <UsingTask

@@ -10,7 +10,7 @@
     <IsBeta>false</IsBeta>
     <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <IsDebug>false</IsDebug>
     <IsDebug Condition="$(Configuration.Contains('Debug'))">true</IsDebug>
@@ -24,7 +24,7 @@
     <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="$(IsRelease)" >
     <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
