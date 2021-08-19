@@ -22,13 +22,10 @@ jobs:
     name: Publish on NuGet
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
+    - name: Setup
+      uses: butr/actions-common-setup@v1.1
       with:
-        dotnet-version: 3.1.300
+        github-token: ${{secrets.GITHUB_TOKEN}}
 
     - name: Pack Bannerlord.BuildResources (Release)
       run: >-
