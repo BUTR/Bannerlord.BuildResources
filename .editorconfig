@@ -1,0 +1,8 @@
+# To learn more about .editorconfig see https://aka.ms/editorconfigdocs
+###############################
+# Core EditorConfig Options   #
+###############################
+
+# All files
+[*]
+indent_style = space
