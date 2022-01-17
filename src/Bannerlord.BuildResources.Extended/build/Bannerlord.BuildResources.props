@@ -1,0 +1,125 @@
+<Project>
+
+  <PropertyGroup>
+    <PostBuildCopyToModulesRegex>.*\.dll|.*\.pdb|.*\.config$</PostBuildCopyToModulesRegex>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsStable>false</IsStable>
+    <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
+    <IsBeta>false</IsBeta>
+    <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsDebug>false</IsDebug>
+    <IsDebug Condition="$(Configuration.Contains('Debug'))">true</IsDebug>
+    <IsRelease>false</IsRelease>
+    <IsRelease Condition="$(Configuration.Contains('Release'))">true</IsRelease>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsDebug)" >
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsRelease)" >
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsStable)" >
+    <DefineConstants>$(DefineConstants);STABLE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsBeta)" >
+    <DefineConstants>$(DefineConstants);BETA</DefineConstants>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <IsMinimal>true</IsMinimal>
+    <IsMinimal Condition="$(Configuration.Contains('Minimal'))">true</IsMinimal>
+    <IsStable>false</IsStable>
+    <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
+    <IsBeta>false</IsBeta>
+    <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SGVFile Condition="!Exists($(ProjectDir)/supported-game-versions.txt)" >$([System.IO.File]::ReadAllText($(ProjectDir)/supported-game-versions.txt))</SGVFile>
+    <SGVFile Condition="!Exists($(SolutionDir)/supported-game-versions.txt)" >$([System.IO.File]::ReadAllText($(SolutionDir)/supported-game-versions.txt))</SGVFile>
+    <SGVFile Condition="!Exists($(SolutionDir)/../supported-game-versions.txt)" >$([System.IO.File]::ReadAllText($(SolutionDir)/../supported-game-versions.txt))</SGVFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="$(OverrideGameVersion) == ''">
+    <!--Parsing  supported-game-versions.txt-->
+    <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
+    <SGVLastEntryIndex>$([MSBuild]::Subtract($(SGVLineCount), 1))</SGVLastEntryIndex>
+    <!--First enrty is Beta, second Stable, last Minimal-->
+    <GameBetaVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[0])</GameBetaVersion>
+    <GameStableVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[1])</GameStableVersion>
+    <GameMinimalVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[$(SGVLastEntryIndex)])</GameMinimalVersion>
+    <!-- -->
+    <GameVersionWithPrefix>e1.1.0</GameVersionWithPrefix>
+    <GameVersionWithPrefix Condition="$(IsMinimal)">$(GameMinimalVersion)</GameVersionWithPrefix>
+    <GameVersionWithPrefix Condition="$(IsStable)">$(GameStableVersion)</GameVersionWithPrefix>
+    <GameVersionWithPrefix Condition="$(IsBeta)">$(GameBetaVersion)</GameVersionWithPrefix>
+    <!-- -->
+    <GameVersion>$(GameVersionWithPrefix.Substring(1))</GameVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(OverrideGameVersion) != ''">
+    <GameVersionWithPrefix>$(OverrideGameVersion)</GameVersionWithPrefix>
+    <GameVersion>$(GameVersionWithPrefix.Substring(1))</GameVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->
+    <GameFolder Condition="$(IsStable)">$(BANNERLORD_STABLE_DIR)</GameFolder>
+    <GameFolder Condition="$(IsBeta)">$(BANNERLORD_BETA_DIR)</GameFolder>
+    <GameFolder Condition="$(GameFolder) == ''">$(BANNERLORD_GAME_DIR)</GameFolder>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GameVersionFlat>$([System.String]::Copy('$(GameVersion)').Replace('.',''))</GameVersionFlat>
+    <GameVersionConstant>e$(GameVersionFlat)</GameVersionConstant>
+  </PropertyGroup>
+
+
+  <!--GitHub Actions-->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <!--NuGet SorceLink-->
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+  <!--SorceLink-->
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <!--SorceLink-->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+  </ItemGroup>
+  <!--CI Builds-->
+  <ItemGroup Condition="$(TargetFramework) == 'net472' AND $(OS) != 'Windows_NT'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+
+</Project>
