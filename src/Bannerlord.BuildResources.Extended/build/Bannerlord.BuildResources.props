@@ -90,7 +90,11 @@
   <PropertyGroup>
     <GameVersionFlat>$([System.String]::Copy('$(GameVersion)').Replace('.',''))</GameVersionFlat>
     <GameVersionConstant>e$(GameVersionFlat)</GameVersionConstant>
+    <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
   </PropertyGroup>
+  <ItemGroup Condition="$(DisableReferenceAssemblies) != 'true'">
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.EarlyAccess" Version="$(GameVersion).*" IncludeAssets="compile" />
+  </ItemGroup>
 
 
   <!--GitHub Actions-->
