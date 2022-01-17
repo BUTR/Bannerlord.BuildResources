@@ -8,6 +8,7 @@ on:
       - '.github/workflows/publish.yml'
       - 'src/**'
       - 'resources/**'
+  workflow_dispatch:
 
 env:
   # Disable the .NET logo in the console output.
