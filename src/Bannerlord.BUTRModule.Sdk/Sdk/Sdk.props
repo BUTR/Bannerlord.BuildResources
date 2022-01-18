@@ -8,8 +8,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
-
   <Import Project="$(MSBuildThisFileDirectory)/Basic.props" />
 
   <PropertyGroup>
@@ -44,5 +42,7 @@
   <ItemGroup>
     <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
   </ItemGroup>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
 </Project>

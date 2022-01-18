@@ -6,8 +6,8 @@
     <Platforms>x64</Platforms>
   </PropertyGroup>
 
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
-
   <Import Project="$(MSBuildThisFileDirectory)/Basic.props" />
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
 </Project>
