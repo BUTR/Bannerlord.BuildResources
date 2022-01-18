@@ -9,8 +9,10 @@
     <Description>MSBuild .NET Sdk for Bannerlord projects.</Description>
     <Authors>BUTR</Authors>
 
-    <PackageId>Bannerlord.BUTRModule.Sdk</PackageId>
+    <RepositoryUrl>https://github.com/BUTR/Bannerlord.BuildResources</RepositoryUrl>
 
+    <PackageId>Bannerlord.BUTRModule.Sdk</PackageId>
+    <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageType>MSBuildSdk</PackageType>
     <PackageTags>MSBuildSdk</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
