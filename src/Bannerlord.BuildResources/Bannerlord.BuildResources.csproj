@@ -1,7 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GITHUB_RUN_NUMBER Condition="$(GITHUB_RUN_NUMBER) == ''">0</GITHUB_RUN_NUMBER>
