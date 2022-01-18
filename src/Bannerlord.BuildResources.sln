@@ -12,12 +12,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		..\.github\workflows\publish.yml = ..\.github\workflows\publish.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.BuildResources.Extended", "Bannerlord.BuildResources.Extended\Bannerlord.BuildResources.Extended.csproj", "{16981A3A-C82D-48A8-919B-09D374EBDD91}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{D9E14959-1E41-4EF8-A1E1-23641B526376}"
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
 		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.BUTRModule.Sdk", "Bannerlord.BUTRModule.Sdk\Bannerlord.BUTRModule.Sdk.csproj", "{4A6A4AF8-3A16-42D5-9A74-67E947E56A14}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.Module.Sdk", "Bannerlord.Module.Sdk\Bannerlord.Module.Sdk.csproj", "{C0C9D591-4790-4934-8D50-533950B85E67}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{A68EEE9E-06D3-4F64-B744-C44F429E69EE}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\Basic.props = Shared\Basic.props
+		Shared\Basic.targets = Shared\Basic.targets
 	EndProjectSection
 EndProject
 Global
@@ -30,10 +38,14 @@ Global
 		{6157DC31-7F61-460A-9A8D-EC3B4F2B3A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6157DC31-7F61-460A-9A8D-EC3B4F2B3A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6157DC31-7F61-460A-9A8D-EC3B4F2B3A92}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16981A3A-C82D-48A8-919B-09D374EBDD91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16981A3A-C82D-48A8-919B-09D374EBDD91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16981A3A-C82D-48A8-919B-09D374EBDD91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16981A3A-C82D-48A8-919B-09D374EBDD91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A6A4AF8-3A16-42D5-9A74-67E947E56A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A6A4AF8-3A16-42D5-9A74-67E947E56A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A6A4AF8-3A16-42D5-9A74-67E947E56A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A6A4AF8-3A16-42D5-9A74-67E947E56A14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0C9D591-4790-4934-8D50-533950B85E67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0C9D591-4790-4934-8D50-533950B85E67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0C9D591-4790-4934-8D50-533950B85E67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0C9D591-4790-4934-8D50-533950B85E67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,7 +54,9 @@ Global
 		{6157DC31-7F61-460A-9A8D-EC3B4F2B3A92} = {A49C9073-D589-45AF-9C97-0BD950464D44}
 		{A49C9073-D589-45AF-9C97-0BD950464D44} = {D9E14959-1E41-4EF8-A1E1-23641B526376}
 		{2FE39BD2-E5BB-4CBA-8F75-E0D716CDB0DF} = {D9E14959-1E41-4EF8-A1E1-23641B526376}
-		{16981A3A-C82D-48A8-919B-09D374EBDD91} = {A49C9073-D589-45AF-9C97-0BD950464D44}
+		{4A6A4AF8-3A16-42D5-9A74-67E947E56A14} = {A49C9073-D589-45AF-9C97-0BD950464D44}
+		{C0C9D591-4790-4934-8D50-533950B85E67} = {A49C9073-D589-45AF-9C97-0BD950464D44}
+		{A68EEE9E-06D3-4F64-B744-C44F429E69EE} = {A49C9073-D589-45AF-9C97-0BD950464D44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B89E8FA4-9E21-4014-AE07-ADB69A3085AD}

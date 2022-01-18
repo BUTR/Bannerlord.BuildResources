@@ -1,69 +1,12 @@
-<Project>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <PropertyGroup>
-    <PostBuildCopyToModulesRegex>.*\.dll|.*\.pdb|.*\.config$</PostBuildCopyToModulesRegex>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <IsStable>false</IsStable>
-    <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
-    <IsBeta>false</IsBeta>
-    <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <IsDebug>false</IsDebug>
-    <IsDebug Condition="$(Configuration.Contains('Debug'))">true</IsDebug>
-    <IsRelease>false</IsRelease>
-    <IsRelease Condition="$(Configuration.Contains('Release'))">true</IsRelease>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(IsDebug)" >
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(IsRelease)" >
-    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>true</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(IsStable)" >
-    <DefineConstants>$(DefineConstants);STABLE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(IsBeta)" >
-    <DefineConstants>$(DefineConstants);BETA</DefineConstants>
-  </PropertyGroup>
-
-
-  <PropertyGroup>
-    <IsMinimal>true</IsMinimal>
-    <IsMinimal Condition="$(Configuration.Contains('Minimal'))">true</IsMinimal>
-    <IsStable>false</IsStable>
-    <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
-    <IsBeta>false</IsBeta>
-    <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <SGVFile Condition="!Exists($(ProjectDir)/supported-game-versions.txt)" >$([System.IO.File]::ReadAllText($(ProjectDir)/supported-game-versions.txt))</SGVFile>
-    <SGVFile Condition="!Exists($(SolutionDir)/supported-game-versions.txt)" >$([System.IO.File]::ReadAllText($(SolutionDir)/supported-game-versions.txt))</SGVFile>
-    <SGVFile Condition="!Exists($(SolutionDir)/../supported-game-versions.txt)" >$([System.IO.File]::ReadAllText($(SolutionDir)/../supported-game-versions.txt))</SGVFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
-  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
 
   <PropertyGroup Condition="$(OverrideGameVersion) == ''">
-    <!--Parsing  supported-game-versions.txt-->
+    <!-- Parsing  supported-game-versions.txt -->
     <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
     <SGVLastEntryIndex>$([MSBuild]::Subtract($(SGVLineCount), 1))</SGVLastEntryIndex>
-    <!--First enrty is Beta, second Stable, last Minimal-->
+    <!-- First enrty is Beta, second Stable, last Minimal -->
     <GameBetaVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[0])</GameBetaVersion>
     <GameStableVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[1])</GameStableVersion>
     <GameMinimalVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[$(SGVLastEntryIndex)])</GameMinimalVersion>
@@ -81,7 +24,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->
+    <!-- Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved -->
     <GameFolder Condition="$(IsStable)">$(BANNERLORD_STABLE_DIR)</GameFolder>
     <GameFolder Condition="$(IsBeta)">$(BANNERLORD_BETA_DIR)</GameFolder>
     <GameFolder Condition="$(GameFolder) == ''">$(BANNERLORD_GAME_DIR)</GameFolder>
@@ -92,40 +35,57 @@
     <GameVersionConstant>e$(GameVersionFlat)</GameVersionConstant>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyName>$(ModuleName).$(GameVersion)</AssemblyName>
+    <AssemblyName>$(ModuleId).$(GameVersion)</AssemblyName>
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
     <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
   </PropertyGroup>
-  
-  <PropertyGroup>
-    <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
-  </PropertyGroup>
+
+
   <ItemGroup Condition="$(DisableReferenceAssemblies) != 'true'">
     <PackageReference Include="Bannerlord.ReferenceAssemblies.EarlyAccess" Version="$(GameVersion).*" IncludeAssets="compile" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Condition="$(BUTRSharedVersion) != ''" Include="Bannerlord.BUTR.Shared" Version="$(BUTRSharedVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Condition="$(BUTRModuleManagerVersion) != ''" Include="Bannerlord.ModuleManager.Source" Version="$(BUTRModuleManagerVersion)" />
+    <PackageReference Condition="$(BUTRModuleLoaderVersion) != ''" Include="Bannerlord.ModuleLoader.Injector" Version="$(BUTRModuleLoaderVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Condition="$(UIExtenderExVersion) != ''" Include="Bannerlord.UIExtenderEx" Version="$(UIExtenderExVersion)" IncludeAssets="compile" />
+    <PackageReference Condition="$(ButterLibVersion) != ''" Include="Bannerlord.ButterLib" Version="$(ButterLibVersion)" IncludeAssets="compile" />
+    <PackageReference Condition="$(MCMVersion) != ''" Include="Bannerlord.MCM" Version="$(MCMVersion)" IncludeAssets="compile" />
+    <PackageReference Condition="$(HarmonyExtensionsVersion) != ''" Include="Harmony.Extensions" Version="$(HarmonyExtensionsVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Condition="$(HarmonyVersion) != ''" Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
+  </ItemGroup>
 
-  <!--GitHub Actions-->
+  <ItemGroup>
+    <PackageReference Include="IsExternalInit" Version="1.0.2" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+  </ItemGroup>
+
+
+  <Import Condition="Exists('$(ProjectDir)/Override.targets')" Project="$(ProjectDir)/Override.targets" />
+
+
+  <!-- GitHub Actions -->
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
-  <!--NuGet SorceLink-->
+  <!-- NuGet SorceLink -->
   <PropertyGroup>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-  <!--SorceLink-->
+  <!-- SorceLink -->
   <PropertyGroup>
     <Deterministic>true</Deterministic>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
-  <!--SorceLink-->
+  <!-- SorceLink -->
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
-  <!--CI Builds-->
+  <!-- CI Builds -->
   <ItemGroup Condition="$(TargetFramework) == 'net472' AND $(OS) != 'Windows_NT'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -133,5 +93,7 @@
     </PackageReference>
   </ItemGroup>
 
+
+  <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
 
 </Project>

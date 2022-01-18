@@ -1,0 +1,28 @@
+<Project>
+
+  <PropertyGroup>
+    <PostBuildCopyToModulesRegex>.*\.dll|.*\.pdb|.*\.config$</PostBuildCopyToModulesRegex>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsDebug>false</IsDebug>
+    <IsDebug Condition="$(Configuration.Contains('Debug'))">true</IsDebug>
+    <IsRelease>false</IsRelease>
+    <IsRelease Condition="$(Configuration.Contains('Release'))">true</IsRelease>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsDebug)" >
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsRelease)" >
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+</Project>

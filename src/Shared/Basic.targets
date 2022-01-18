@@ -27,18 +27,22 @@
     <Error Condition="!Exists($(GameFolder))" Text="'GameFolder' property is not set! Can't find the game binaries!" />
   </Target>
 
-  <Target Name="PostBuildCheckForGameFolder" BeforeTargets="PostBuildCopyToModules" Condition="$(ModuleName) != ''">
+  <Target Name="PostBuildCheckForGameFolder" BeforeTargets="PostBuildCopyToModules" Condition="$(ModuleId) != ''">
     <Warning Condition="!Exists($(GameFolder))" Text="'GameFolder' property links to a non existing folder! No modules will be copied to the game's Module folder! Check '/build/commpn.props'!"/>
   </Target>
 
-  <Target Name="PostBuildCopyToModules" AfterTargets="PostBuildEvent" Condition="$(ModuleName) != '' AND Exists($(GameFolder))">
-    <CreateDirectory Directory="$(GameFolder)/Modules/$(ModuleName)/bin/Win64_Shipping_Client" />
+  <Target Name="PostBuildCopyToModules" AfterTargets="PostBuildEvent" Condition="$(ModuleId) != '' AND Exists($(GameFolder))">
+    <CreateDirectory Directory="$(GameFolder)/Modules/$(ModuleId)/bin/Win64_Shipping_Client" />
 
-    <CopyFolder FromDirectory="$(TargetDir)" ToDirectory="$(GameFolder)/Modules/$(ModuleName)/bin/Win64_Shipping_Client" Regex="$(PostBuildCopyToModulesRegex)" Clean="true" />
+    <CopyFolder FromDirectory="$(TargetDir)" ToDirectory="$(GameFolder)/Modules/$(ModuleId)/bin/Win64_Shipping_Client" Regex="$(PostBuildCopyToModulesRegex)" Clean="true" />
 
-    <CopyFolder FromDirectory="$(ProjectDir)/_Module" ToDirectory="$(GameFolder)/Modules/$(ModuleName)" Regex="^.*$" Clean="false" />
+    <CopyFolder FromDirectory="$(ProjectDir)/_Module" ToDirectory="$(GameFolder)/Modules/$(ModuleId)" Regex="^.*$" Clean="false" />
 
     <ItemGroup>
+      <SubModuleOverrides Include="ModuleId">
+        <Regex>\$moduleid\$</Regex>
+        <Replacement>$(ModuleId)</Replacement>
+      </SubModuleOverrides>
       <SubModuleOverrides Include="ModuleName">
         <Regex>\$modulename\$</Regex>
         <Replacement>$(ModuleName)</Replacement>
@@ -75,7 +79,7 @@
 
     <ReplaceFileText
       Condition="'@(SubModuleOverrides->Count())' &gt; 0"
-      File="$(GameFolder)/Modules/$(ModuleName)/SubModule.xml"
+      File="$(GameFolder)/Modules/$(ModuleId)/SubModule.xml"
       Regex="%(SubModuleOverrides.Regex)"
       ReplacementText="%(SubModuleOverrides.Replacement)" />
   </Target>

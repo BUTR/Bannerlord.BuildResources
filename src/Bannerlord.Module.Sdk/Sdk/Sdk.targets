@@ -1,0 +1,9 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+
+  <Import Condition="Exists('$(ProjectDir)/Override.targets')" Project="$(ProjectDir)/Override.targets" />
+
+  <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
+
+</Project>

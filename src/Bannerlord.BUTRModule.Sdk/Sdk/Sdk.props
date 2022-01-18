@@ -1,0 +1,48 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Default values -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <Platforms>x64</Platforms>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
+
+  <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
+
+  <PropertyGroup>
+    <IsStable>false</IsStable>
+    <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
+    <IsBeta>false</IsBeta>
+    <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsStable)" >
+    <DefineConstants>$(DefineConstants);STABLE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsBeta)" >
+    <DefineConstants>$(DefineConstants);BETA</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsMinimal>true</IsMinimal>
+    <IsMinimal Condition="$(Configuration.Contains('Minimal'))">true</IsMinimal>
+    <IsStable>false</IsStable>
+    <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
+    <IsBeta>false</IsBeta>
+    <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SGVFile Condition="Exists('$(ProjectDir)/supported-game-versions.txt')" >$([System.IO.File]::ReadAllText('$(ProjectDir)/supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="Exists('$(SolutionDir)/supported-game-versions.txt')" >$([System.IO.File]::ReadAllText('$(SolutionDir)/supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="Exists('$(SolutionDir)/../supported-game-versions.txt')" >$([System.IO.File]::ReadAllText('$(SolutionDir)/../supported-game-versions.txt'))</SGVFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
+  </ItemGroup>
+
+</Project>

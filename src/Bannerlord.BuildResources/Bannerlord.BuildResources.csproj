@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GITHUB_RUN_NUMBER Condition="$(GITHUB_RUN_NUMBER) == ''">0</GITHUB_RUN_NUMBER>
-    <Version>1.0.0.$(GITHUB_RUN_NUMBER)</Version>
+    <Version>1.0.1.$(GITHUB_RUN_NUMBER)</Version>
 
     <IsPackable>true</IsPackable>
     <NuspecFile>Bannerlord.BuildResources.nuspec</NuspecFile>
@@ -12,6 +14,17 @@
 
     <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Basic.props -->
+    <None Include="..\Shared\Basic.props" Pack="true" PackagePath="Sdk">
+      <Link>build\Basic.props</Link>
+    </None>
+    <!-- Basic.targets -->
+    <None Include="..\Shared\Basic.targets" Pack="true" PackagePath="Sdk">
+      <Link>build\Basic.targets</Link>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" Version="17.0.0" />
