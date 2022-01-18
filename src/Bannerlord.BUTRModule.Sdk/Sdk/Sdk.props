@@ -10,7 +10,7 @@
 
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
-  <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)/Basic.props" />
 
   <PropertyGroup>
     <IsStable>false</IsStable>

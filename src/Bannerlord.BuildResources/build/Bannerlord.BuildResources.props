@@ -1,6 +1,6 @@
 <Project>
 
-  <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)/Basic.props" />
 
   <PropertyGroup>
     <IsStable>false</IsStable>
