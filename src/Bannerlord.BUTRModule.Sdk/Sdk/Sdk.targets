@@ -93,4 +93,14 @@
 
   <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
 
+  <Target Name="ExtendedBuild" AfterTargets="Build" Condition="'$(ExtendedBuild)' == 'true'">
+    <PropertyGroup>
+      <ScriptExecutable>pwsh -noprofile -noninteractive -Command</ScriptExecutable>
+      <ScriptLocation>$(MSBuildThisFileDirectory)\build-fully.ps1</ScriptLocation>
+      <ScriptParams>-BasePath '$(ProjectDir)' -OutputPath '$(GameFolder)\Modules\$(ModuleId)\' -ModuleId '$(ModuleId)' -ProjectPath '$(ProjectPath)'</ScriptParams>
+    </PropertyGroup>
+    <Exec Command="$(ScriptExecutable) &quot;$(ScriptLocation) $(ScriptParams)&quot;" LogStandardErrorAsError="True" ContinueOnError="False" />
+  </Target>
+
+
 </Project>
