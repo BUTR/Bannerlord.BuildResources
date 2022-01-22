@@ -1,5 +1,18 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+
+
+  <PropertyGroup Condition="$(SGVFile) == ''">
+    <SGVFile Condition="$([System.IO.File]::Exists('$(ProjectDir)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(ProjectDir)\supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\..\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\..\supported-game-versions.txt'))</SGVFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
+  </ItemGroup>
+
   <PropertyGroup Condition="$(OverrideGameVersion) == ''">
     <!-- Parsing  supported-game-versions.txt -->
     <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
@@ -37,9 +50,6 @@
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
     <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
   </PropertyGroup>
-
-
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
 
 
   <ItemGroup Condition="$(DisableReferenceAssemblies) != 'true'">
@@ -94,7 +104,7 @@
   <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
 
   <!-- Enhance build if $(ExtendedBuild) is set, optional -->
-  <Target Name="ExtendedBuild" AfterTargets="Pack" Condition="'$(ExtendedBuild)' == 'true'">
+  <Target Name="ExtendedBuild" AfterTargets="Build" Condition="'$(ExtendedBuild)' == 'true'">
     <PropertyGroup>
       <ScriptExecutable>pwsh -noprofile -noninteractive -Command</ScriptExecutable>
       <ScriptLocation>$(MSBuildThisFileDirectory)\build-fully.ps1</ScriptLocation>

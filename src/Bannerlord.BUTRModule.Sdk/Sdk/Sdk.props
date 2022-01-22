@@ -35,13 +35,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <SGVFile Condition="Exists('$(ProjectDir)/supported-game-versions.txt')" >$([System.IO.File]::ReadAllText('$(ProjectDir)/supported-game-versions.txt'))</SGVFile>
-    <SGVFile Condition="Exists('$(SolutionDir)/supported-game-versions.txt')" >$([System.IO.File]::ReadAllText('$(SolutionDir)/supported-game-versions.txt'))</SGVFile>
-    <SGVFile Condition="Exists('$(SolutionDir)/../supported-game-versions.txt')" >$([System.IO.File]::ReadAllText('$(SolutionDir)/../supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(ProjectDir)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(ProjectDir)\supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\..\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\..\supported-game-versions.txt'))</SGVFile>
   </PropertyGroup>
-  <ItemGroup>
-    <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
-  </ItemGroup>
 
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
