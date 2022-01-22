@@ -1,18 +1,5 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
-
-
-  <PropertyGroup Condition="$(SGVFile) == ''">
-    <SGVFile Condition="$([System.IO.File]::Exists('$(ProjectDir)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(ProjectDir)\supported-game-versions.txt'))</SGVFile>
-    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\supported-game-versions.txt'))</SGVFile>
-    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\..\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\..\supported-game-versions.txt'))</SGVFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
-  </ItemGroup>
-
+  
   <PropertyGroup Condition="$(OverrideGameVersion) == ''">
     <!-- Parsing  supported-game-versions.txt -->
     <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
@@ -47,7 +34,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>$(ModuleId).$(GameVersion)</AssemblyName>
-    <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
     <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
   </PropertyGroup>
 
@@ -101,7 +87,12 @@
     </PackageReference>
   </ItemGroup>
 
+
   <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
+
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+
 
   <!-- Enhance build if $(ExtendedBuild) is set, optional -->
   <Target Name="ExtendedBuild" AfterTargets="Build" Condition="'$(ExtendedBuild)' == 'true'">
@@ -122,6 +113,5 @@
     </PropertyGroup>
     <Exec Command="$(ScriptExecutable) &quot;$(ScriptLocation) $(ScriptParams)&quot;" LogStandardErrorAsError="True" ContinueOnError="False" ConsoleToMSBuild="true" />
   </Target>
-
 
 </Project>

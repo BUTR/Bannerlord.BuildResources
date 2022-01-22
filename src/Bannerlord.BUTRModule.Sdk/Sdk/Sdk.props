@@ -6,6 +6,7 @@
     <Platforms>x64</Platforms>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
+    <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)/Basic.props" />
@@ -40,6 +41,18 @@
     <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\..\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\..\supported-game-versions.txt'))</SGVFile>
   </PropertyGroup>
 
+
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
+
+
+  <PropertyGroup Condition="$(SGVFile) == ''">
+    <SGVFile Condition="$([System.IO.File]::Exists('$(MSBuildProjectDirectory)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\..\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\..\supported-game-versions.txt'))</SGVFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
+  </ItemGroup>
 
 </Project>
