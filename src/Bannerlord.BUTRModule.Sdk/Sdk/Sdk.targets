@@ -97,7 +97,7 @@
     <PropertyGroup>
       <ScriptExecutable>pwsh -noprofile -noninteractive -Command</ScriptExecutable>
       <ScriptLocation>$(MSBuildThisFileDirectory)\build-fully.ps1</ScriptLocation>
-      <ScriptParams>-BasePath '$(ProjectDir)' -OutputPath '$(GameFolder)' -ModuleId '$(ModuleId)' -ProjectPath '$(ProjectPath)'</ScriptParams>
+      <ScriptParams>-BasePath '$(ProjectDir)' -OutputPath '$(GameFolder)' -ModuleId '$(ModuleId)' -ProjectPath '$(ProjectPath)' -Configuration '$(Configuration)'</ScriptParams>
     </PropertyGroup>
     <Exec Command="$(ScriptExecutable) &quot;$(ScriptLocation) $(ScriptParams)&quot;" LogStandardErrorAsError="True" ContinueOnError="False" />
   </Target>

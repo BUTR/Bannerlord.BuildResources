@@ -13,7 +13,11 @@ param (
 
     [Parameter()]
     [System.String]
-    $ProjectPath
+    $ProjectPath,
+
+    [Parameter()]
+    [System.String]
+    $Configuration
 )
 
 function New-TemporaryDirectory {
@@ -32,6 +36,9 @@ if (-not $OutputPath || -not (Test-Path -LiteralPath $OutputPath)) {
     $OutputPath = [IO.Path]::GetFullPath((Join-Path -Path $BasePath -ChildPath "output")); # Normalize path
 } else {
     $OutputPath = [IO.Path]::GetFullPath(($OutputPath)); # Normalize path
+}
+if (-not $Configuration) {
+    throw "The Configuration was not set!";
 }
 
 $temp = New-TemporaryDirectory;
@@ -54,8 +61,8 @@ For ($i = 0; $i -le $gameversions.Length - 1; $i++)
 {
     if ($env:GITHUB_ACTIONS -eq "true") { echo "::group::Build for $gameversion"; }
     $gameversion = $gameversions[$i];
-    dotnet clean $proj --configuration Release;
-    dotnet build $proj --configuration Release -p:OverrideGameVersion=$gameversion -p:GameFolder="$OutputPath" -p:ExtendedBuild=false;
+    dotnet clean $proj --configuration $Configuration;
+    dotnet build $proj --configuration $Configuration -p:OverrideGameVersion=$gameversion -p:GameFolder="$OutputPath" -p:ExtendedBuild=false;
     # Copy Implementations to the temp folder
     Copy-Item $pdll $temp;
     Copy-Item $ppdb $temp;
