@@ -1,0 +1,10 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved -->
+    <GameFolder Condition="$(IsStable)">$(BANNERLORD_STABLE_DIR)</GameFolder>
+    <GameFolder Condition="$(IsBeta)">$(BANNERLORD_BETA_DIR)</GameFolder>
+    <GameFolder Condition="$(GameFolder) == ''">$(BANNERLORD_GAME_DIR)</GameFolder>
+  </PropertyGroup>
+
+</Project>

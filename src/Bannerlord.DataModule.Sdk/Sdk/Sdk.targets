@@ -1,0 +1,23 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="$(MSBuildThisFileDirectory)/Advanced.targets" />
+
+  <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
+
+  <!--
+  <Target Name="AddGameVersionMetadaAssemblyAttributes"/>
+  <Target Name="AddInternalsVisibleTo"/>
+
+  <Target Name="ResolvePackageAssets"/>
+
+  <Target Name="Compile"/>
+  -->
+
+  <Target Name="Build">
+    <CallTarget Targets="CopyModule"/>
+  </Target>
+  <Target Name="Pack">
+    <CallTarget Targets="CopyModule"/>
+  </Target>
+
+</Project>

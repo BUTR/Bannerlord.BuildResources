@@ -35,11 +35,19 @@
     <Warning Condition="!Exists($(GameFolder))" Text="'GameFolder' property links to a non existing folder! No modules will be copied to the game's Module folder! Check '/build/commpn.props'!"/>
   </Target>
 
+
   <Target Name="PostBuildCopyToModules" AfterTargets="PostBuildEvent" Condition="$(ModuleId) != '' AND Exists($(GameFolder))">
+    <CallTarget Targets="CopyBinaries"/>
+    <CallTarget Targets="CopyModule"/>
+  </Target>
+
+  <Target Name="CopyBinaries" AfterTargets="PostBuildEvent" Condition="$(ModuleId) != '' AND Exists($(GameFolder))">
     <CreateDirectory Directory="$(GameFolder)/Modules/$(ModuleId)/bin/Win64_Shipping_Client" />
 
     <CopyFolder FromDirectory="$(TargetDir)" ToDirectory="$(GameFolder)/Modules/$(ModuleId)/bin/Win64_Shipping_Client" Regex="$(PostBuildCopyToModulesRegex)" Clean="true" />
+  </Target>
 
+  <Target Name="CopyModule" AfterTargets="PostBuildEvent" Condition="$(ModuleId) != '' AND Exists($(GameFolder))">
     <CopyFolder FromDirectory="$(ProjectDir)/_Module" ToDirectory="$(GameFolder)/Modules/$(ModuleId)" Regex="^.*$" Clean="false" />
 
     <ItemGroup>
@@ -91,6 +99,7 @@
       Regex="%(SubModuleOverrides.Regex)"
       ReplacementText="%(SubModuleOverrides.Replacement)" />
   </Target>
+
 
   <UsingTask
     TaskName="CreateDirectory"

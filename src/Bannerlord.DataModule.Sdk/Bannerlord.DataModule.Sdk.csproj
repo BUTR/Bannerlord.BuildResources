@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 
-    <GITHUB_RUN_NUMBER Condition="$(GITHUB_RUN_NUMBER) == ''">17</GITHUB_RUN_NUMBER>
+    <GITHUB_RUN_NUMBER Condition="$(GITHUB_RUN_NUMBER) == ''">0</GITHUB_RUN_NUMBER>
     <Version>1.0.1.$(GITHUB_RUN_NUMBER)</Version>
 
     <Description>MSBuild .NET Sdk for Bannerlord projects.</Description>
@@ -11,7 +11,7 @@
 
     <RepositoryUrl>https://github.com/BUTR/Bannerlord.BuildResources</RepositoryUrl>
 
-    <PackageId>Bannerlord.BUTRModule.Sdk</PackageId>
+    <PackageId>Bannerlord.DataModule.Sdk</PackageId>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageType>MSBuildSdk</PackageType>
     <PackageTags>MSBuildSdk</PackageTags>
@@ -23,7 +23,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Sdk\build-fully.ps1" Pack="true" PackagePath="Sdk" />
     <!-- Package Sdk\Sdk.props and Sdk\Sdk.targets file -->
     <None Include="Sdk\Sdk.props" Pack="true" PackagePath="Sdk" />
     <None Include="Sdk\Sdk.targets" Pack="true" PackagePath="Sdk" />
@@ -47,6 +46,6 @@
 
   <!-- SorceLink -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 </Project>
