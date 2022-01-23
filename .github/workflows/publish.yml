@@ -33,6 +33,7 @@ jobs:
         dotnet pack src/Bannerlord.BuildResources/Bannerlord.BuildResources.csproj --configuration Release -o "./packages";
         dotnet pack src/Bannerlord.Module.Sdk/Bannerlord.Module.Sdk.csproj --configuration Release -o "./packages";
         dotnet pack src/Bannerlord.BUTRModule.Sdk/Bannerlord.BUTRModule.Sdk.csproj --configuration Release -o "./packages";
+        dotnet pack src/Bannerlord.DataModule.Sdk/Bannerlord.DataModule.Sdk.csproj --configuration Release -o "./packages";
 
     - name: Push to NuGet
       run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
