@@ -48,7 +48,7 @@ $bin =  [IO.Path]::GetFullPath((Join-Path -Path $OutputPath -ChildPath ("Modules
 $pdll = Join-Path -Path $bin -ChildPath ("$ModuleId*.dll");
 $ppdb = Join-Path -Path $bin -ChildPath ("$ModuleId*.pdb");
 $gameversionspath = [IO.Path]::GetFullPath((Join-Path -Path $BasePath -ChildPath "supported-game-versions.txt"));
-$gameversions = Get-Content -LiteralPath $gameversionspath;
+$gameversions = [IO.File]::ReadAllLines($gameversionspath);
 
 # The folders are required to be created before executing the script
 if ($env:GITHUB_ACTIONS -eq "true") { echo "::group::Create folders"; }
