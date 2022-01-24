@@ -4,15 +4,6 @@
 
   <Import Project="$(MSBuildThisFileDirectory)/Basic.targets" />
 
-  <!--
-  <Target Name="AddGameVersionMetadaAssemblyAttributes"/>
-  <Target Name="AddInternalsVisibleTo"/>
-
-  <Target Name="ResolvePackageAssets"/>
-
-  <Target Name="Compile"/>
-  -->
-
   <Target Name="Build">
     <CallTarget Targets="CopyModule"/>
   </Target>

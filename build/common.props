@@ -1,0 +1,27 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <GITHUB_RUN_NUMBER Condition="$(GITHUB_RUN_NUMBER) == ''">0</GITHUB_RUN_NUMBER>
+    <Version>1.0.1.$(GITHUB_RUN_NUMBER)</Version>
+
+    <!-- Exclude target framework from the package dependencies as we don't include the build output -->
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+
+    <DevelopmentDependency>true</DevelopmentDependency>
+
+    <Authors>BUTR</Authors>
+    <RepositoryUrl>https://github.com/BUTR/Bannerlord.BuildResources</RepositoryUrl>
+
+    <PackageOutputPath>../../packages</PackageOutputPath>
+  </PropertyGroup>
+
+  <!-- SorceLink -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+  </ItemGroup>
+
+</Project>

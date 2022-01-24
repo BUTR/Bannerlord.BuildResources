@@ -1,14 +1,32 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   
+  <PropertyGroup Condition="$(SGVFile) == ''">
+    <SGVFile Condition="$([System.IO.File]::Exists('$(MSBuildProjectDirectory)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\supported-game-versions.txt'))</SGVFile>
+    <SGVFile Condition="$([System.IO.File]::Exists('$(SolutionDir)\..\supported-game-versions.txt'))" >$([System.IO.File]::ReadAllText('$(SolutionDir)\..\supported-game-versions.txt'))</SGVFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
+  </ItemGroup>
+
+
   <PropertyGroup Condition="$(OverrideGameVersion) == ''">
     <GameVersionFallback>e1.1.0</GameVersionFallback>
     <!-- Parsing  supported-game-versions.txt -->
     <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
     <SGVLastEntryIndex>$([MSBuild]::Subtract($(SGVLineCount), 1))</SGVLastEntryIndex>
     <!-- First enrty is Beta, second Stable, last Minimal -->
-    <GameBetaVersion Condition="'$(SGVLineCount)' &gt; 0">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[0])</GameBetaVersion>
-    <GameStableVersion Condition="'$(SGVLineCount)' &gt; 1">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[1])</GameStableVersion>
-    <GameMinimalVersion Condition="'$(SGVLineCount)' &gt; 0">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[$(SGVLastEntryIndex)])</GameMinimalVersion>
+    <FirstLine Condition="'$(SGVLineCount)' &gt; 0">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[0])</FirstLine>
+    <SecondLine Condition="'$(SGVLineCount)' &gt; 1">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[1])</SecondLine>
+    <LastLine Condition="'$(SGVLineCount)' &gt; 0">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[$(SGVLastEntryIndex)])</LastLine>
+
+    <SecondLine Condition="'$(SecondLine)' == ''">$(FirstLine)</SecondLine>
+    <LastLine Condition="'$(LastLine)' == ''">$(SecondLine)</LastLine>
+    <!-- -->
+    <GameBetaVersion>$(FirstLine)</GameBetaVersion>
+    <GameStableVersion>$(SecondLine)</GameStableVersion>
+    <GameMinimalVersion>$(LastLine)</GameMinimalVersion>
     <!-- -->
     <GameVersionWithPrefix Condition="$(IsMinimal)">$(GameMinimalVersion)</GameVersionWithPrefix>
     <GameVersionWithPrefix Condition="$(IsStable)">$(GameStableVersion)</GameVersionWithPrefix>

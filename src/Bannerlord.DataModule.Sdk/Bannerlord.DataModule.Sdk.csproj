@@ -1,25 +1,12 @@
 ﻿<Project Sdk="Microsoft.Build.NoTargets/2.0.1">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-
-    <GITHUB_RUN_NUMBER Condition="$(GITHUB_RUN_NUMBER) == ''">0</GITHUB_RUN_NUMBER>
-    <Version>1.0.1.$(GITHUB_RUN_NUMBER)</Version>
-
     <Description>MSBuild .NET Sdk for Bannerlord projects.</Description>
-    <Authors>BUTR</Authors>
-
-    <RepositoryUrl>https://github.com/BUTR/Bannerlord.BuildResources</RepositoryUrl>
 
     <PackageId>Bannerlord.DataModule.Sdk</PackageId>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <PackageType>MSBuildSdk</PackageType>
     <PackageTags>MSBuildSdk</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-
-    <!-- Exclude target framework from the package dependencies as we don't include the build output -->
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,9 +30,5 @@
       <Link>Sdk\Advanced.targets</Link>
     </None>
   </ItemGroup>
-
-  <!-- SorceLink -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-  </ItemGroup>
+  
 </Project>
