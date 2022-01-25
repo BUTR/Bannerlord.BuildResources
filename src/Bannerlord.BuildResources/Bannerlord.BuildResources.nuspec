@@ -15,7 +15,9 @@
   </metadata>
   <files>
     <file src="_._" target="tools" />
-	
+
+    <file src="..\Shared\Basic.props" target="build" />
+    <file src="..\Shared\Basic.targets" target="build" />
     <file src="build\*.*" target="build" />
     <file src="buildMultiTargeting\*.*" target="buildMultiTargeting" />
   </files>
