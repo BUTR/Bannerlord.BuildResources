@@ -12,7 +12,7 @@
 
 
   <PropertyGroup Condition="$(OverrideGameVersion) == ''">
-    <GameVersionFallback>e1.1.0</GameVersionFallback>
+    <GameVersionFallback>v1.0.0</GameVersionFallback>
     <!-- Parsing  supported-game-versions.txt -->
     <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
     <SGVLastEntryIndex>$([MSBuild]::Subtract($(SGVLineCount), 1))</SGVLastEntryIndex>
@@ -51,7 +51,7 @@
 
 
   <ItemGroup Condition="$(DisableReferenceAssemblies) != 'true'">
-    <PackageReference Include="Bannerlord.ReferenceAssemblies.EarlyAccess" Version="$(GameVersion).*" IncludeAssets="compile" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies" Version="$(GameVersion).*" IncludeAssets="compile" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Condition="$(BUTRSharedVersion) != ''" Include="Bannerlord.BUTR.Shared" Version="$(BUTRSharedVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
