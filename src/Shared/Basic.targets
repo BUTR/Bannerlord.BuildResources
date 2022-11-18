@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <Target Name="WarningsForEnvs" BeforeTargets="BeforeCompile">
-    <Warning Condition="$(BANNERLORD_GAME_DIR) == '' AND $(BANNERLORD_STABLE_DIR) == '' AND $(BANNERLORD_BETA_DIR) == ''" Text="Environment variable 'BANNERLORD_GAME_DIR' is not set!"></Warning>
-    <Warning Condition="$(BANNERLORD_GAME_DIR) == '' AND $(BANNERLORD_STABLE_DIR) == ''" Text="Environment variable 'BANNERLORD_STABLE_DIR' is not set!"></Warning>
-    <Warning Condition="$(BANNERLORD_GAME_DIR) == '' AND $(BANNERLORD_BETA_DIR) == ''" Text="Environment variable 'BANNERLORD_BETA_DIR' is not set!"></Warning>
+    <Warning Condition="$(BANNERLORD_GAME_DIR) == '' AND $(BANNERLORD_STABLE_DIR) == '' AND $(BANNERLORD_BETA_DIR) == ''" Text="Environment variable 'BANNERLORD_GAME_DIR' is not set!" />
+    <Warning Condition="$(BANNERLORD_GAME_DIR) == '' AND $(BANNERLORD_STABLE_DIR) == ''" Text="Environment variable 'BANNERLORD_STABLE_DIR' is not set!" />
+    <Warning Condition="$(BANNERLORD_GAME_DIR) == '' AND $(BANNERLORD_BETA_DIR) == ''" Text="Environment variable 'BANNERLORD_BETA_DIR' is not set!" />
   </Target>
 
   <Target Name="AddGameVersionMetadaAssemblyAttributes" BeforeTargets="CoreGenerateAssemblyInfo">
@@ -31,8 +31,11 @@
     <Error Condition="!Exists($(GameFolder))" Text="'GameFolder' property is not set! Can't find the game binaries!" />
   </Target>
 
-  <Target Name="PostBuildCheckForGameFolder" BeforeTargets="PostBuildCopyToModules" Condition="$(ModuleId) != ''">
-    <Warning Condition="!Exists($(GameFolder))" Text="'GameFolder' property links to a non existing folder! No modules will be copied to the game's Module folder! Check '/build/commpn.props'!"/>
+  <Target Name="PostBuildCheckForVariables" BeforeTargets="PostBuildCopyToModules" Condition="$(ModuleId) != ''">
+    <Warning Condition="!Exists($(GameFolder))" Text="'GameFolder' property links to a non existing folder! The module won't be copied to the game's Modules folder!"/>
+    <Warning Condition="$(ModuleId) == ''" Text="'ModuleId' property is not set! SubModule.xml won't have the variable '$moduleid$' replaced!" />
+    <Warning Condition="$(ModuleName) == ''" Text="'ModuleName' property is not set! SubModule.xml won't have the variable '$modulename$' replaced!" />
+    <Warning Condition="$(Version) == ''" Text="'Version' property is not set! SubModule.xml won't have the variable '$version$' replaced!" />
   </Target>
 
 
