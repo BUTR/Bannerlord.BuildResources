@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <PostBuildCopyToModulesRegex>.*\.dll|.*\.pdb|.*\.config$</PostBuildCopyToModulesRegex>
+    <ExcludeSourceFilesFromModule>true</ExcludeSourceFilesFromModule>
   </PropertyGroup>
 
   <PropertyGroup>

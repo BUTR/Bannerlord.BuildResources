@@ -51,7 +51,7 @@
   </Target>
 
   <Target Name="CopyModule" AfterTargets="PostBuildEvent" Condition="$(ModuleId) != '' AND Exists($(GameFolder))">
-    <CopyFolder FromDirectory="$(ProjectDir)/_Module" ToDirectory="$(GameFolder)/Modules/$(ModuleId)" Regex="^.*$" Clean="false" />
+    <CopyFolder FromDirectory="$(ProjectDir)/_Module" ToDirectory="$(GameFolder)/Modules/$(ModuleId)" Regex="^.*$" Clean="false" ExcludeSourceFiles="$(ExcludeSourceFilesFromModule)" />
 
     <ItemGroup>
       <SubModuleOverrides Include="ModuleId">
@@ -130,15 +130,20 @@
       <FromDirectory ParameterType="System.String" Required="true" />
       <ToDirectory ParameterType="System.String" Required="true" />
       <Regex ParameterType="System.String" Required="true" />
+      <ExcludeSourceFiles ParameterType="System.Boolean" Required="false" />
       <Clean ParameterType="System.Boolean" Required="true" />
     </ParameterGroup>
     <Task>
       <Code Type="Fragment" Language="cs">
         <![CDATA[
+            var excludedSourceFolders = new string[] { "Assets", "AssetSources", $"GUI{System.IO.Path.DirectorySeparatorChar}SpriteParts" };
+            var fromDirectory = new System.IO.DirectoryInfo(FromDirectory);
+            var toDirectory = new System.IO.DirectoryInfo(ToDirectory);
+
             void CopyTo(System.IO.DirectoryInfo from, System.IO.DirectoryInfo to)
             {
                 if (!to.Exists)
-                  to.Create();
+                    to.Create();
 
                 if (Clean)
                 {
@@ -148,11 +153,20 @@
 
                 foreach (var fileInfo in from.GetFiles().Where(x => System.Text.RegularExpressions.Regex.IsMatch(x.Name, Regex)))
                     fileInfo.CopyTo(System.IO.Path.Combine(to.FullName, fileInfo.Name), true);
+
                 foreach (var directoryInfo in from.GetDirectories())
+                {
+                    if (ExcludeSourceFiles)
+                    {
+                        var relativePath = System.IO.Path.GetRelativePath(fromDirectory.FullName, directoryInfo.FullName);
+                        if (excludedSourceFolders.Contains(relativePath))
+                            continue;
+                    }
                     CopyTo(directoryInfo, to.CreateSubdirectory(directoryInfo.Name));
+                }
             }
 
-            CopyTo(new System.IO.DirectoryInfo(FromDirectory), new System.IO.DirectoryInfo(ToDirectory));
+            CopyTo(fromDirectory, toDirectory);
         ]]>
       </Code>
     </Task>
