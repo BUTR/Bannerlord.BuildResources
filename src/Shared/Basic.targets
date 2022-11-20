@@ -136,7 +136,8 @@
     <Task>
       <Code Type="Fragment" Language="cs">
         <![CDATA[
-            var excludedSourceFolders = new string[] { "Assets", "AssetSources", $"GUI{System.IO.Path.DirectorySeparatorChar}SpriteParts" };
+            var s = System.IO.Path.DirectorySeparatorChar;
+            var excludedSourceFolders = new string[] { $"_Module{s}Assets", $"_Module{s}AssetSources", $"_Module{s}GUI{s}SpriteParts" };
             var fromDirectory = new System.IO.DirectoryInfo(FromDirectory);
             var toDirectory = new System.IO.DirectoryInfo(ToDirectory);
 
@@ -158,7 +159,7 @@
                 {
                     if (ExcludeSourceFiles)
                     {
-                        var relativePath = System.IO.Path.GetRelativePath(fromDirectory.FullName, directoryInfo.FullName);
+                        var relativePath = new System.Uri(fromDirectory.FullName).MakeRelativeUri(new System.Uri(directoryInfo.FullName)).OriginalString;
                         if (excludedSourceFolders.Contains(relativePath))
                             continue;
                     }
