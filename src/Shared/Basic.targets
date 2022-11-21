@@ -143,6 +143,13 @@
 
             void CopyTo(System.IO.DirectoryInfo from, System.IO.DirectoryInfo to)
             {
+                if (ExcludeSourceFiles)
+                {
+                    var relativePath = new System.Uri(fromDirectory.FullName).MakeRelativeUri(new System.Uri(from.FullName)).OriginalString;
+                    if (excludedSourceFolders.Contains(relativePath))
+                        return;
+                }
+
                 if (!to.Exists)
                     to.Create();
 
