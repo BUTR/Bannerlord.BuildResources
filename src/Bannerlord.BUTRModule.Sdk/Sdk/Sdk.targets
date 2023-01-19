@@ -42,7 +42,7 @@
 
   <PropertyGroup>
     <GameVersionFlat>$([System.String]::Copy('$(GameVersion)').Replace('.',''))</GameVersionFlat>
-    <GameVersionConstant>e$(GameVersionFlat)</GameVersionConstant>
+    <GameVersionConstant>v$(GameVersionFlat)</GameVersionConstant>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>$(ModuleId).$(GameVersion)</AssemblyName>
