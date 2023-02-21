@@ -40,7 +40,8 @@
 
 
   <Target Name="PostBuildCopyToModules" AfterTargets="PostBuildEvent" Condition="$(ModuleId) != '' AND Exists($(GameFolder))">
-    <CallTarget Targets="CopyBinaries"/>
+    <CallTarget Targets="CopyBinariesWindows"/>
+    <CallTarget Targets="CopyBinariesWindowsStore"/>
     <CallTarget Targets="CopyModule"/>
   </Target>
 
