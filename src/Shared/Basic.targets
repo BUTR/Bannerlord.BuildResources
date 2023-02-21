@@ -44,12 +44,12 @@
     <CallTarget Targets="CopyModule"/>
   </Target>
 
-  <Target Name="CopyBinaries" AfterTargets="PostBuildEvent" Condition="$(BuildForWindows) == 'true' AND $(ModuleId) != '' AND Exists($(GameFolder))">
+  <Target Name="CopyBinariesWindows" AfterTargets="PostBuildEvent" Condition="$(BuildForWindows) == 'true' AND $(ModuleId) != '' AND Exists($(GameFolder))">
     <CreateDirectory Directory="$(GameFolder)/Modules/$(ModuleId)/bin/Win64_Shipping_Client" />
 
     <CopyFolder FromDirectory="$(TargetDir)" ToDirectory="$(GameFolder)/Modules/$(ModuleId)/bin/Win64_Shipping_Client" Regex="$(PostBuildCopyToModulesRegex)" Clean="true" />
   </Target>
-  <Target Name="CopyBinaries" AfterTargets="PostBuildEvent" Condition="$(BuildForWindowsStore) == 'true' AND  $(ModuleId) != '' AND Exists($(GameFolder))">
+  <Target Name="CopyBinariesWindowsStore" AfterTargets="PostBuildEvent" Condition="$(BuildForWindowsStore) == 'true' AND  $(ModuleId) != '' AND Exists($(GameFolder))">
     <CreateDirectory Directory="$(GameFolder)/Modules/$(ModuleId)/bin/Gaming.Desktop.x64_Shipping_Client" />
 
     <CopyFolder FromDirectory="$(TargetDir)" ToDirectory="$(GameFolder)/Modules/$(ModuleId)/bin/Gaming.Desktop.x64_Shipping_Client" Regex="$(PostBuildCopyToModulesRegex)" Clean="true" />
