@@ -1,6 +1,8 @@
 <Project>
 
   <PropertyGroup>
+    <BuildForWindows>true</BuildForWindows>
+    <BuildForWindowsStore>false</BuildForWindowsStore>
     <PostBuildCopyToModulesRegex>.*\.dll|.*\.pdb|.*\.config$</PostBuildCopyToModulesRegex>
     <ExcludeSourceFilesFromModule>true</ExcludeSourceFilesFromModule>
   </PropertyGroup>

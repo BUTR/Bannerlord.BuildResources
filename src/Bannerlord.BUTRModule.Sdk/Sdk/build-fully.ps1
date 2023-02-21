@@ -58,18 +58,23 @@ if (-not $Configuration) {
     throw "The Configuration was not set!";
 }
 
-$temp = New-TemporaryDirectory;
+$tempWindows = New-TemporaryDirectory;
+$tempWindowsStore = New-TemporaryDirectory;
 
 $proj = [IO.Path]::GetFullPath($ProjectPath); # Normalize path
-$bin =  [IO.Path]::GetFullPath((Join-Path -Path $OutputPath -ChildPath ("Modules/$ModuleId/bin/Win64_Shipping_Client"))); # Normalize path
-$pdll = Join-Path -Path $bin -ChildPath ("$ModuleId*.dll");
-$ppdb = Join-Path -Path $bin -ChildPath ("$ModuleId*.pdb");
+$binWindows =  [IO.Path]::GetFullPath((Join-Path -Path $OutputPath -ChildPath ("Modules/$ModuleId/bin/Win64_Shipping_Client"))); # Normalize path
+$binWindowsStore =  [IO.Path]::GetFullPath((Join-Path -Path $OutputPath -ChildPath ("Modules/$ModuleId/bin/Gaming.Desktop.x64_Shipping_Client"))); # Normalize path
+$pdllWindows = Join-Path -Path $binWindows -ChildPath ("$ModuleId*.dll");
+$pdllWindowsStore = Join-Path -Path $binWindowsStore -ChildPath ("$ModuleId*.dll");
+$ppdbWindows = Join-Path -Path $binWindows -ChildPath ("$ModuleId*.pdb");
+$ppdbWindowsStore = Join-Path -Path $binWindowsStore -ChildPath ("$ModuleId*.pdb");
 $gameversionspath = GetPathIfFileExist $BasePath "supported-game-versions.txt";
 $gameversions = [IO.File]::ReadAllLines($gameversionspath);
 
 # The folders are required to be created before executing the script
 if ($env:GITHUB_ACTIONS -eq "true") { Write-Output "::group::Create folders"; }
-New-Item -ItemType directory -Force -Path $bin;
+New-Item -ItemType directory -Force -Path $binWindows;
+New-Item -ItemType directory -Force -Path $binWindowsStore;
 if ($env:GITHUB_ACTIONS -eq "true") { Write-Output "::endgroup::"; }
 
 # Process all implementations
@@ -80,16 +85,21 @@ For ($i = 0; $i -le $gameversions.Length - 1; $i++)
     $gameversion = $gameversions[$i];
     dotnet clean $proj --configuration $Configuration;
     dotnet build $proj --configuration $Configuration -p:OverrideGameVersion=$gameversion -p:GameFolder="$OutputPath" -p:ExtendedBuild=false;
-    # Copy Implementations to the temp folder
-    Copy-Item $pdll $temp;
-    Copy-Item $ppdb $temp;
+    # Copy Implementations to the temp Windows folder
+    Copy-Item $pdllWindows $tempWindows;
+    Copy-Item $ppdbWindows $tempWindows;
+    # Copy Implementations to the temp Windows folder
+    Copy-Item $pdllWindowsStore $tempWindowsStore;
+    Copy-Item $ppdbWindowsStore $tempWindowsStore;
     if ($env:GITHUB_ACTIONS -eq "true") { Write-Output "::endgroup::"; }
 }
 if ($env:GITHUB_ACTIONS -eq "true") { Write-Output "::endgroup::"; }
 
 if ($env:GITHUB_ACTIONS -eq "true") { Write-Output "::group::Copy implementations folder to final folder and delete it"; }
 # Copy Implementations and Loader to the Module
-Copy-Item $temp/* $bin;
+Copy-Item $tempWindows/* $binWindows;
+Copy-Item $tempWindowsStore/* $binWindowsStore;
 # Delete Implementations folder
-Remove-Item -Recurse $temp;
+Remove-Item -Recurse $tempWindows;
+Remove-Item -Recurse $tempWindowsStore;
 if ($env:GITHUB_ACTIONS -eq "true") { Write-Output "::endgroup::"; }
