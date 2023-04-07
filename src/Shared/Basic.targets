@@ -4,6 +4,11 @@
     <ModuleIdFlat>$([System.Text.RegularExpressions.Regex]::Replace($(ModuleId),"[^a-zA-Z0-9]","_"))</ModuleIdFlat>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GameBinariesFolder Condition="Exists('$(GameFolder)\bin\Win64_Shipping_Client')">Win64_Shipping_Client</GameBinariesFolder>
+    <GameBinariesFolder Condition="Exists('$(GameFolder)\bin\Gaming.Desktop.x64_Shipping_Client')">Gaming.Desktop.x64_Shipping_Client</GameBinariesFolder>
+  </PropertyGroup>
+
   <Target Name="WarningsForEnvs" BeforeTargets="BeforeCompile">
     <Warning Condition="$(BANNERLORD_GAME_DIR) == '' AND $(BANNERLORD_STABLE_DIR) == '' AND $(BANNERLORD_BETA_DIR) == ''" Text="Environment variable 'BANNERLORD_GAME_DIR' is not set!" />
     <Warning Condition="$(BANNERLORD_GAME_DIR) == '' AND $(BANNERLORD_STABLE_DIR) == ''" Text="Environment variable 'BANNERLORD_STABLE_DIR' is not set!" />
