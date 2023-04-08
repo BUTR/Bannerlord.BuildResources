@@ -85,9 +85,9 @@
         <Regex>\$moduleurl\$</Regex>
         <Replacement>$(ModuleUrl)</Replacement>
       </SubModuleOverrides>
-      <SubModuleOverrides Include="GameVersion" Condition="$(GameVersion) != ''">
+      <SubModuleOverrides Include="GameVersion" Condition="$(GameVersionWithPrefix) != ''">
         <Regex>\$gameversion\$</Regex>
-        <Replacement>$(GameVersion)</Replacement>
+        <Replacement>$(GameVersionWithPrefix)</Replacement>
       </SubModuleOverrides>
       <SubModuleOverrides Include="HarmonyVersion" Condition="$(HarmonyVersion) != ''">
         <Regex>\$harmonyversion\$</Regex>
