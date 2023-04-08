@@ -55,7 +55,7 @@
 
     <CopyFolder FromDirectory="$(TargetDir)" ToDirectory="$(GameFolder)/Modules/$(ModuleId)/bin/Win64_Shipping_Client" Regex="$(PostBuildCopyToModulesRegex)" Clean="true" />
   </Target>
-  <Target Name="CopyBinariesWindowsStore" AfterTargets="PostBuildEvent" Condition="$(BuildForWindowsStore) == 'true' AND  $(ModuleId) != '' AND Exists($(GameFolder))">
+  <Target Name="CopyBinariesWindowsStore" AfterTargets="PostBuildEvent" Condition="$(BuildForWindowsStore) == 'true' AND $(ModuleId) != '' AND Exists($(GameFolder))">
     <CreateDirectory Directory="$(GameFolder)/Modules/$(ModuleId)/bin/Gaming.Desktop.x64_Shipping_Client" />
 
     <CopyFolder FromDirectory="$(TargetDir)" ToDirectory="$(GameFolder)/Modules/$(ModuleId)/bin/Gaming.Desktop.x64_Shipping_Client" Regex="$(PostBuildCopyToModulesRegex)" Clean="true" />
@@ -76,6 +76,10 @@
       <SubModuleOverrides Include="ModuleName">
         <Regex>\$modulename\$</Regex>
         <Replacement>$(ModuleName)</Replacement>
+      </SubModuleOverrides>
+      <SubModuleOverrides Include="ModuleUrl">
+        <Regex>\$moduleurl\$</Regex>
+        <Replacement>$(ModuleUrl)</Replacement>
       </SubModuleOverrides>
       <SubModuleOverrides Include="Version">
         <Regex>\$version\$</Regex>

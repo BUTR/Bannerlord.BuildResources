@@ -5,6 +5,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <IncludeBuildOutput>false</IncludeBuildOutput>
+    <DisableReferenceAssemblies>false</DisableReferenceAssemblies>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)/Basic.props" />
