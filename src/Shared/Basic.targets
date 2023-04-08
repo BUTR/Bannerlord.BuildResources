@@ -77,13 +77,13 @@
         <Regex>\$modulename\$</Regex>
         <Replacement>$(ModuleName)</Replacement>
       </SubModuleOverrides>
-      <SubModuleOverrides Include="ModuleUrl">
-        <Regex>\$moduleurl\$</Regex>
-        <Replacement>$(ModuleUrl)</Replacement>
-      </SubModuleOverrides>
       <SubModuleOverrides Include="Version">
         <Regex>\$version\$</Regex>
         <Replacement>$(Version)</Replacement>
+      </SubModuleOverrides>
+      <SubModuleOverrides Include="ModuleUrl" Condition="$(ModuleUrl) != ''">
+        <Regex>\$moduleurl\$</Regex>
+        <Replacement>$(ModuleUrl)</Replacement>
       </SubModuleOverrides>
       <SubModuleOverrides Include="GameVersion" Condition="$(GameVersion) != ''">
         <Regex>\$gameversion\$</Regex>
