@@ -64,10 +64,6 @@
   <Target Name="CopyModule" AfterTargets="PostBuildEvent" Condition="$(ModuleId) != '' AND Exists($(GameFolder))">
     <CopyFolder FromDirectory="$(ProjectDir)/_Module" ToDirectory="$(GameFolder)/Modules/$(ModuleId)" Regex="^.*$" Clean="false" ExcludeSourceFiles="$(ExcludeSourceFilesFromModule)" />
 
-    <PropertyGroup>
-      <GameMinimalVersion Conditon="$(GameMinimalVersion) == ''">$(GameVersion)</GameMinimalVersion>
-    </PropertyGroup>
-    
     <ItemGroup>
       <SubModuleOverrides Include="ModuleId">
         <Regex>\$moduleid\$</Regex>
@@ -89,9 +85,9 @@
         <Regex>\$moduleurl\$</Regex>
         <Replacement>$(ModuleUrl)</Replacement>
       </SubModuleOverrides>
-      <SubModuleOverrides Include="GameVersion" Condition="$(GameMinimalVersion) != ''">
+      <SubModuleOverrides Include="GameVersion" Condition="$(GameVersion) != ''">
         <Regex>\$gameversion\$</Regex>
-        <Replacement>$(GameMinimalVersion)</Replacement>
+        <Replacement>$(GameVersion)</Replacement>
       </SubModuleOverrides>
       <SubModuleOverrides Include="HarmonyVersion" Condition="$(HarmonyVersion) != ''">
         <Regex>\$harmonyversion\$</Regex>

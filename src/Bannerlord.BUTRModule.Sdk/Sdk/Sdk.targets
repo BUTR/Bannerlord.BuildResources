@@ -48,6 +48,13 @@
     <AssemblyName>$(ModuleId).$(GameVersion)</AssemblyName>
     <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <SubModuleOverrides Include="GameVersion" Condition="$(GameMinimalVersion) != ''">
+      <Regex>\$gameversion\$</Regex>
+      <Replacement>$(GameMinimalVersion)</Replacement>
+    </SubModuleOverrides>
+  </ItemGroup>
 
 
   <ItemGroup Condition="$(DisableReferenceAssemblies) != 'true'">
