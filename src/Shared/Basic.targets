@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GameBinariesFolder Condition="Exists('$(GameFolder)\bin\Win64_Shipping_Client')">Win64_Shipping_Client</GameBinariesFolder>
-    <GameBinariesFolder Condition="Exists('$(GameFolder)\bin\Gaming.Desktop.x64_Shipping_Client')">Gaming.Desktop.x64_Shipping_Client</GameBinariesFolder>
+    <GameBinariesFolder Condition="Exists('$(GameFolder)\bin\Win64_Shipping_Client\Bannerlord.exe')">Win64_Shipping_Client</GameBinariesFolder>
+    <GameBinariesFolder Condition="Exists('$(GameFolder)\bin\Gaming.Desktop.x64_Shipping_Client\Bannerlord.exe')">Gaming.Desktop.x64_Shipping_Client</GameBinariesFolder>
   </PropertyGroup>
 
   <Target Name="WarningsForEnvs" BeforeTargets="BeforeCompile">
