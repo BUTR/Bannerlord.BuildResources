@@ -49,7 +49,7 @@
     <GameVersionConstant>v$(GameVersionFlat)</GameVersionConstant>
   </PropertyGroup>
   <PropertyGroup Condition="$(OverrideAssemblyName) == 'true'">
-    <AssemblyName>$(ModuleId).$(GameVersion)</AssemblyName>
+    <AssemblyName>$(ModuleId).$(GameVersionWithPrefix)</AssemblyName>
     <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
   </PropertyGroup>
   
