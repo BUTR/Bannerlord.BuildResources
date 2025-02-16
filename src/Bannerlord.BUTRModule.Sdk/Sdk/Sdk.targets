@@ -116,14 +116,7 @@
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
 
-  <UsingTask
-          Condition="$(BuildingInsideVisualStudio) == 'true'"
-          TaskName="BuildModuleTask"
-          AssemblyFile="$(MSBuildThisFileDirectory)\..\build\net472\Bannerlord.BuildResources.MSBuild.dll" />
-  <UsingTask
-          Condition="$(BuildingInsideVisualStudio) != 'true'"
-          TaskName="BuildModuleTask"
-          AssemblyFile="$(MSBuildThisFileDirectory)\..\build\net6.0\Bannerlord.BuildResources.MSBuild.dll" />
+  <UsingTask TaskName="BuildModuleTask" AssemblyFile="$(MSBuildThisFileDirectory)\..\build\Bannerlord.BuildResources.MSBuild.dll" />
 
   <!-- Enhance build if $(ExtendedBuild) is set, optional -->
   <!--
