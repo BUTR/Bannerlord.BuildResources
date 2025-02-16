@@ -30,6 +30,7 @@ jobs:
 
     - name: Pack projects (Release)
       run: >-
+        dotnet build src/Bannerlord.BuildResources.MSBuild/Bannerlord.BuildResources.MSBuild.csproj --configuration Release;
         dotnet pack src/Bannerlord.BuildResources/Bannerlord.BuildResources.csproj --configuration Release -o "./packages";
         dotnet pack src/Bannerlord.Module.Sdk/Bannerlord.Module.Sdk.csproj --configuration Release -o "./packages";
         dotnet pack src/Bannerlord.BUTRModule.Sdk/Bannerlord.BUTRModule.Sdk.csproj --configuration Release -o "./packages";
