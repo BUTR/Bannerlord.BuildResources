@@ -119,16 +119,6 @@
   <UsingTask TaskName="BuildModuleTask" AssemblyFile="$(MSBuildThisFileDirectory)\..\build\Bannerlord.BuildResources.MSBuild.dll" />
 
   <!-- Enhance build if $(ExtendedBuild) is set, optional -->
-  <!--
-  <Target Name="ExtendedBuild" AfterTargets="Build" Condition="'$(ExtendedBuild)' == 'true'">
-    <PropertyGroup>
-      <ScriptExecutable>pwsh -noprofile -noninteractive -Command</ScriptExecutable>
-      <ScriptLocation>$(MSBuildThisFileDirectory)\build-fully.ps1</ScriptLocation>
-      <ScriptParams>-BasePath '$(ProjectDir)' -OutputPath '$(GameFolder)' -ModuleId '$(ModuleId)' -ProjectPath '$(ProjectPath)' -Configuration '$(Configuration)'</ScriptParams>
-    </PropertyGroup>
-    <Exec Command="$(ScriptExecutable) &quot;$(ScriptLocation) $(ScriptParams)&quot;" LogStandardErrorAsError="True" ContinueOnError="False" />
-  </Target>
-  -->
   <Target Name="ExtendedBuild" AfterTargets="Build" Condition="'$(ExtendedBuild)' == 'true'">
     <BuildModuleTask
             BasePath="$(ProjectDir)"
@@ -139,16 +129,6 @@
   </Target>
 
   <!-- Publish all via pack -->
-  <!--
-  <Target Name="ExtendedPack" AfterTargets="Pack">
-    <PropertyGroup>
-      <ScriptExecutable>pwsh -noprofile -noninteractive -Command</ScriptExecutable>
-      <ScriptLocation>$(MSBuildThisFileDirectory)\build-fully.ps1</ScriptLocation>
-      <ScriptParams>-BasePath '$(ProjectDir)' -OutputPath '$(GameFolder)' -ModuleId '$(ModuleId)' -ProjectPath '$(ProjectPath)' -Configuration '$(Configuration)'</ScriptParams>
-    </PropertyGroup>
-    <Exec Command="$(ScriptExecutable) &quot;$(ScriptLocation) $(ScriptParams)&quot;" LogStandardErrorAsError="True" ContinueOnError="False" />
-  </Target>
-  -->
   <Target Name="ExtendedPack" AfterTargets="Pack">
     <BuildModuleTask
             BasePath="$(ProjectDir)"
