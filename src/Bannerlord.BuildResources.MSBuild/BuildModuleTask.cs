@@ -128,7 +128,6 @@ public class BuildModuleTask : Task
             { "OverrideGameVersion", gameVersion },
             { "GameFolder", OutputPath },
             { "ExtendedBuild", "false" },
-            { "MSBuildNodeReuse", "false" },
         };
 
         var projectCollection = new ProjectCollection(globalProperties);
@@ -136,12 +135,14 @@ public class BuildModuleTask : Task
 
         var buildParameters = new BuildParameters(projectCollection)
         {
-            Loggers = [new ConsoleLogger()]
+            Loggers = [new ConsoleLogger()],
+            EnableNodeReuse = false,
         };
 
         var buildRequest = new BuildRequestData(projectInstance, [target]);
 
-        var result = BuildManager.DefaultBuildManager.Build(buildParameters, buildRequest);
+        using var buildManager = new BuildManager();
+        var result = buildManager.Build(buildParameters, buildRequest);
 
         if (result.OverallResult != BuildResultCode.Success)
         {
