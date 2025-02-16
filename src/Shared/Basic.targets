@@ -196,9 +196,9 @@
   </UsingTask>
 
   <UsingTask
-    TaskName="ReplaceFileText"
-    TaskFactory="RoslynCodeTaskFactory"
-    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+          TaskName="ReplaceFileText"
+          TaskFactory="RoslynCodeTaskFactory"
+          AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <File ParameterType="System.String" Required="true" />
       <Regex ParameterType="System.String" Required="true" />
@@ -217,7 +217,6 @@
         {
             try
             {
-                // Read with FileShare.ReadWrite to allow other readers
                 string content;
                 using (var fileStream = new System.IO.FileStream(File, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
                 using (var reader = new System.IO.StreamReader(fileStream))
@@ -225,7 +224,18 @@
                     content = reader.ReadToEnd();
                 }
 
-                content = System.Text.RegularExpressions.Regex.Replace(content, Regex, ReplacementText);
+                if (!string.IsNullOrEmpty(ReplacementText))
+                {
+                    content = System.Text.RegularExpressions.Regex.Replace(content, Regex, ReplacementText);
+                }
+                else
+                {
+                    var regex = new System.Text.RegularExpressions.Regex(Regex);
+                    if (regex.IsMatch(content))
+                    {
+                        throw new System.InvalidOperationException($"Replacement text is empty for regex '{Regex}' in file '{File}'. Build failed because a match was found.");
+                    }
+                }
 
                 using (var fileStream = new System.IO.FileStream(File, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read))
                 using (var writer = new System.IO.StreamWriter(fileStream))
@@ -234,18 +244,24 @@
                 }
 
                 success = true;
-                break; // Exit loop on success
+                break;
             }
             catch (System.IO.IOException ex)
             {
                 if (i == retryCount - 1)
-                    throw; // Re-throw on last attempt
-                System.Threading.Thread.Sleep(retryDelayMs); // Wait before retrying
+                    throw;
+                System.Threading.Thread.Sleep(retryDelayMs);
+            }
+            catch (System.InvalidOperationException ex)
+            {
+                Log.LogError(ex.Message);
+                success = false;
+                break;
             }
         }
 
         if (!success)
-            throw new System.IO.IOException($"Failed to write to file '{File}' after {retryCount} retries.");
+            throw new System.IO.IOException($"Failed to process file '{File}' after {retryCount} retries.");
       ]]>
       </Code>
     </Task>
