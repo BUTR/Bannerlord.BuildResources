@@ -36,6 +36,7 @@
     <!-- Include the DLL in the NuGet package -->
     <None Include="..\Bannerlord.BuildResources.MSBuild\bin\$(Configuration)\net472\Bannerlord.BuildResources.MSBuild.dll" Pack="true" PackagePath="build\net472" />
     <None Include="..\Bannerlord.BuildResources.MSBuild\bin\$(Configuration)\net6.0\Bannerlord.BuildResources.MSBuild.dll" Pack="true" PackagePath="build\net6.0" />
+    <None Include="..\Bannerlord.BuildResources.MSBuild\bin\$(Configuration)\net6.0\Microsoft.Build.Locator.dll" Pack="true" PackagePath="build\net6.0" />
   </ItemGroup>
   
 </Project>
