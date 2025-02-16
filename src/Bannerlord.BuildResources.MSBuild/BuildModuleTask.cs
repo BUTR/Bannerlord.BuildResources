@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
+using Microsoft.Build.Logging;
 using Microsoft.Build.Utilities;
 
 public class BuildModuleTask : Task
@@ -58,8 +61,10 @@ public class BuildModuleTask : Task
                 Log.LogMessage(MessageImportance.High, $"Building for {gameVersion}");
 
                 // Clean and build the project
-                RunDotNetCommand($"clean \"{ProjectPath}\" --configuration {Configuration}");
-                RunDotNetCommand($"build \"{ProjectPath}\" --configuration {Configuration} -p:OverrideGameVersion={gameVersion} -p:GameFolder=\"{OutputPath}\" -p:ExtendedBuild=false");
+                RunMSBuild("Clean", gameVersion);
+                RunMSBuild("Build", gameVersion);
+                //RunDotNetCommand($"clean \"{ProjectPath}\" --configuration {Configuration}");
+                //RunDotNetCommand($"build \"{ProjectPath}\" --configuration {Configuration} -p:OverrideGameVersion={gameVersion} -p:GameFolder=\"{OutputPath}\" -p:ExtendedBuild=false");
 
                 // Copy files to temporary directories
                 CopyFiles(Path.Combine(binWindows, $"{ModuleId}*.dll"), tempWindows);
@@ -82,6 +87,62 @@ public class BuildModuleTask : Task
         {
             Log.LogErrorFromException(ex);
             return false;
+        }
+    }
+
+    private void RunDotNetCommand(string arguments)
+    {
+        Log.LogMessage(MessageImportance.High, $"dotnet {arguments}");
+        var processStartInfo = new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = "dotnet",
+            Arguments = arguments,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+        };
+
+        using var process = System.Diagnostics.Process.Start(processStartInfo);
+        if (process == null)
+            throw new Exception("Failed to start dotnet command");
+        
+        process.OutputDataReceived += (sender, args) => Log.LogMessage(MessageImportance.High, args.Data);
+        process.ErrorDataReceived += (sender, args) => Log.LogError(args.Data);
+
+        process.Start();
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+        process.WaitForExit();
+        
+        if (process.ExitCode != 0)
+            throw new Exception($"dotnet command failed: {process.StandardError.ReadToEnd()}");
+    }
+    
+    private void RunMSBuild(string target, string gameVersion)
+    {
+        var globalProperties = new Dictionary<string, string>
+        {
+            { "Configuration", Configuration },
+            { "OverrideGameVersion", gameVersion },
+            { "GameFolder", OutputPath },
+            { "ExtendedBuild", "false" },
+        };
+
+        var projectInstance = new ProjectInstance(ProjectPath, globalProperties, null);
+
+        var buildParameters = new BuildParameters
+        {
+            Loggers = [new ConsoleLogger()]
+        };
+
+        var buildRequest = new BuildRequestData(projectInstance, [target]);
+
+        var result = BuildManager.DefaultBuildManager.Build(buildParameters, buildRequest);
+
+        if (result.OverallResult != BuildResultCode.Success)
+        {
+            throw new Exception($"MSBuild {target} failed for {ProjectPath}");
         }
     }
 
@@ -108,26 +169,6 @@ public class BuildModuleTask : Task
 
         Directory.CreateDirectory(tempPath);
         return tempPath;
-    }
-
-    private static void RunDotNetCommand(string arguments)
-    {
-        var processStartInfo = new System.Diagnostics.ProcessStartInfo
-        {
-            FileName = "dotnet",
-            Arguments = arguments,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-        };
-
-        using var process = System.Diagnostics.Process.Start(processStartInfo);
-        if (process == null)
-            throw new Exception("Failed to start dotnet command");
-        process.WaitForExit();
-        if (process.ExitCode != 0)
-            throw new Exception($"dotnet command failed: {process.StandardError.ReadToEnd()}");
     }
 
     private static void CopyFiles(string sourcePattern, string destinationDirectory)
