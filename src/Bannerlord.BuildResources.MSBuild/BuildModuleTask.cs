@@ -128,6 +128,7 @@ public class BuildModuleTask : Task
             { "OverrideGameVersion", gameVersion },
             { "GameFolder", OutputPath },
             { "ExtendedBuild", "false" },
+            { "MSBuildNodeReuse", "false" },
         };
 
         var projectCollection = new ProjectCollection(globalProperties);
