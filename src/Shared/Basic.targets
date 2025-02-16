@@ -112,10 +112,10 @@
     </ItemGroup>
 
     <ReplaceFileText
-      Condition="'@(SubModuleOverrides->Count())' &gt; 0"
-      File="$(GameFolder)/Modules/$(ModuleId)/SubModule.xml"
-      Regex="%(SubModuleOverrides.Regex)"
-      ReplacementText="%(SubModuleOverrides.Replacement)" />
+            Condition="'@(SubModuleOverrides->Count())' &gt; 0"
+            File="$(GameFolder)/Modules/$(ModuleId)/SubModule.xml"
+            Regex="%(SubModuleOverrides.Regex)"
+            ReplacementText="%(SubModuleOverrides.Replacement)"/>
   </Target>
 
 
@@ -203,14 +203,50 @@
       <File ParameterType="System.String" Required="true" />
       <Regex ParameterType="System.String" Required="true" />
       <ReplacementText ParameterType="System.String" Required="true" />
+      <RetryCount ParameterType="System.Int32" Required="false" />
+      <RetryDelayMs ParameterType="System.Int32" Required="false" />
     </ParameterGroup>
     <Task>
       <Code Type="Fragment" Language="cs">
         <![CDATA[
-          System.IO.File.WriteAllText(
-            File,
-            System.Text.RegularExpressions.Regex.Replace(System.IO.File.ReadAllText(File), Regex, ReplacementText));
-        ]]>
+        int retryCount = RetryCount > 0 ? RetryCount : 3;
+        int retryDelayMs = RetryDelayMs > 0 ? RetryDelayMs : 1000;
+        bool success = false;
+
+        for (int i = 0; i < retryCount; i++)
+        {
+            try
+            {
+                // Read with FileShare.ReadWrite to allow other readers
+                string content;
+                using (var fileStream = new System.IO.FileStream(File, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite))
+                using (var reader = new System.IO.StreamReader(fileStream))
+                {
+                    content = reader.ReadToEnd();
+                }
+
+                content = System.Text.RegularExpressions.Regex.Replace(content, Regex, ReplacementText);
+
+                using (var fileStream = new System.IO.FileStream(File, System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.Read))
+                using (var writer = new System.IO.StreamWriter(fileStream))
+                {
+                    writer.Write(content);
+                }
+
+                success = true;
+                break; // Exit loop on success
+            }
+            catch (System.IO.IOException ex)
+            {
+                if (i == retryCount - 1)
+                    throw; // Re-throw on last attempt
+                System.Threading.Thread.Sleep(retryDelayMs); // Wait before retrying
+            }
+        }
+
+        if (!success)
+            throw new System.IO.IOException($"Failed to write to file '{File}' after {retryCount} retries.");
+      ]]>
       </Code>
     </Task>
   </UsingTask>

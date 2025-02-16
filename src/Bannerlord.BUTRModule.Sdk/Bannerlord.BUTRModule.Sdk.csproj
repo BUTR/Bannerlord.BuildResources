@@ -34,7 +34,9 @@
       <Link>Sdk\Advanced.targets</Link>
     </None>
     <!-- Include the DLL in the NuGet package -->
+    <!--
     <None Include="$(OutputPath)\Bannerlord.BuildResources.MSBuild.dll" Pack="true" PackagePath="build" />
+    -->
   </ItemGroup>
 
 </Project>
