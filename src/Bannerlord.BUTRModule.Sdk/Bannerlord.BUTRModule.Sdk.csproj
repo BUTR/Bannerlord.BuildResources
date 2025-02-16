@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bannerlord.BuildResources.MSBuild\Bannerlord.BuildResources.MSBuild.csproj" />
+    <ProjectReference Include="..\Bannerlord.BuildResources.MSBuild\Bannerlord.BuildResources.MSBuild.csproj" IncludeAssets="none" />
   </ItemGroup>
   
   <ItemGroup>
@@ -34,9 +34,8 @@
       <Link>Sdk\Advanced.targets</Link>
     </None>
     <!-- Include the DLL in the NuGet package -->
-    <!--
-    <None Include="$(OutputPath)\Bannerlord.BuildResources.MSBuild.dll" Pack="true" PackagePath="build" />
-    -->
+    <None Include="..\Bannerlord.BuildResources.MSBuild\bin\$(Configuration)\net472\Bannerlord.BuildResources.MSBuild.dll" Pack="true" PackagePath="build\net472" />
+    <None Include="..\Bannerlord.BuildResources.MSBuild\bin\$(Configuration)\net6.0\Bannerlord.BuildResources.MSBuild.dll" Pack="true" PackagePath="build\net6.0" />
   </ItemGroup>
-
+  
 </Project>

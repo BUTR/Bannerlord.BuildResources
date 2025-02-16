@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
+using Microsoft.Build.Locator;
 using Microsoft.Build.Logging;
 using Microsoft.Build.Utilities;
 
 public class BuildModuleTask : Task
 {
+    private static bool msbuildRegistered = false;
+    
     [Required]
     public required string BasePath { get; set; }
 
@@ -55,6 +60,22 @@ public class BuildModuleTask : Task
             Directory.CreateDirectory(binWindows);
             Directory.CreateDirectory(binWindowsStore);
 
+            if (!msbuildRegistered)
+            {
+                var instances = MSBuildLocator.QueryVisualStudioInstances();
+                var latestInstance = instances.OrderByDescending(i => i.Version).FirstOrDefault();
+                if (latestInstance != null)
+                {
+                    MSBuildLocator.RegisterInstance(latestInstance);
+                    msbuildRegistered = true;
+                    Log.LogMessage(MessageImportance.High, $"Registered MSBuild: {latestInstance.MSBuildPath}");
+                }
+                else
+                {
+                    throw new Exception("No valid MSBuild instance found.");
+                }
+            }
+            
             // Process each game version
             foreach (var gameVersion in gameVersions)
             {
@@ -129,9 +150,10 @@ public class BuildModuleTask : Task
             { "ExtendedBuild", "false" },
         };
 
+        var projectCollection = new ProjectCollection(globalProperties);
         var projectInstance = new ProjectInstance(ProjectPath, globalProperties, null);
 
-        var buildParameters = new BuildParameters
+        var buildParameters = new BuildParameters(projectCollection)
         {
             Loggers = [new ConsoleLogger()]
         };
