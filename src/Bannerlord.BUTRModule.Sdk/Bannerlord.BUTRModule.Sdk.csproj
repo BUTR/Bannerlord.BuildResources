@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.Build.NoTargets/3.7.56">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>MSBuild .NET Sdk for Bannerlord projects.</Description>
 
@@ -10,7 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Sdk\build-fully.ps1" Pack="true" PackagePath="Sdk" />
+    <ProjectReference Include="..\Bannerlord.BuildResources.MSBuild\Bannerlord.BuildResources.MSBuild.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <!-- Package Sdk\Sdk.props and Sdk\Sdk.targets file -->
     <None Include="Sdk\Sdk.props" Pack="true" PackagePath="Sdk" />
     <None Include="Sdk\Sdk.targets" Pack="true" PackagePath="Sdk" />
@@ -30,6 +33,8 @@
     <None Include="..\Shared\Advanced.targets" Pack="true" PackagePath="Sdk">
       <Link>Sdk\Advanced.targets</Link>
     </None>
+    <!-- Include the DLL in the NuGet package -->
+    <None Include="$(OutputPath)\Bannerlord.BuildResources.MSBuild.dll" Pack="true" PackagePath="build" />
   </ItemGroup>
 
 </Project>
