@@ -81,6 +81,9 @@ public class BuildModuleTask : Task
             Directory.Delete(tempWindows, true);
             Directory.Delete(tempWindowsStore, true);
 
+            RunMSBuild("Clean");
+            RunMSBuild("Restore");
+
             return true;
         }
         catch (Exception ex)
@@ -88,6 +91,33 @@ public class BuildModuleTask : Task
             Log.LogErrorFromException(ex);
             return false;
         }
+    }
+
+    private void RunMSBuild(string target, string gameVersion)
+    {
+        var globalProperties = new Dictionary<string, string>
+        {
+            { "Configuration", Configuration },
+            { "GameFolder", OutputPath },
+            { "ExtendedBuild", "false" },
+        };
+
+        var projectCollection = new ProjectCollection(globalProperties);
+        var projectInstance = new ProjectInstance(ProjectPath, globalProperties, null);
+
+        var buildParameters = new BuildParameters(projectCollection)
+        {
+            Loggers = [new ConsoleLogger()],
+            EnableNodeReuse = false,
+        };
+
+        var buildRequest = new BuildRequestData(projectInstance, [target]);
+
+        using var buildManager = new BuildManager();
+        var result = buildManager.Build(buildParameters, buildRequest);
+
+        if (result.OverallResult != BuildResultCode.Success)
+            throw new Exception($"MSBuild {target} failed for {ProjectPath}");
     }
     
     private void RunMSBuild(string target, string gameVersion)
