@@ -63,6 +63,7 @@ public class BuildModuleTask : Task
 
                 // Clean and build the project
                 RunMSBuild("Clean", gameVersion);
+                RunMSBuild("Restore", gameVersion);
                 RunMSBuild("Build", gameVersion);
 
                 // Copy files to temporary directories
