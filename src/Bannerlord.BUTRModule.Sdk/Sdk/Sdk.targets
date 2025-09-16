@@ -47,10 +47,10 @@
   <PropertyGroup>
     <GameVersionFlat>$([System.String]::Copy('$(GameVersion)').Replace('.',''))</GameVersionFlat>
     <GameVersionConstant>v$(GameVersionFlat)</GameVersionConstant>
+    <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$(OverrideAssemblyName) == 'true'">
     <AssemblyName>$(ModuleId).$(GameVersionWithPrefix)</AssemblyName>
-    <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
   </PropertyGroup>
   
   <ItemGroup>
