@@ -93,7 +93,7 @@ public class BuildModuleTask : Task
         }
     }
 
-    private void RunMSBuild(string target, string gameVersion)
+    private void RunMSBuild(string target)
     {
         var globalProperties = new Dictionary<string, string>
         {
